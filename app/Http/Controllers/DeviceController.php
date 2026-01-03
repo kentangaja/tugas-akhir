@@ -1,0 +1,51 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use App\Models\Device;
+
+class DeviceController extends Controller
+{
+    public function index()
+    {
+        $devices = auth()->user()->devices;
+        return view('devices.index', compact('devices'));
+    }
+
+    public function show(Device $device)
+    {
+        $latest = $device->sensorData()->latest()->first();
+        return view('devices.show', compact('device', 'latest'));
+    }
+
+    public function code(Device $device)
+    {
+        return view('devices.code', compact('device'));
+    }
+
+    public function create()
+    {
+        return view('devices.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'device_name' => 'required|string|max:255',
+            'fan_threshold' => 'nullable|numeric',
+            'soil_threshold' => 'nullable|integer',
+        ]);
+
+        auth()->user()->devices()->create([
+            'device_name' => $request->device_name,
+            'api_key' => Str::uuid(),
+            'fan_threshold' => $request->fan_threshold,
+            'soil_threshold' => $request->soil_threshold,
+        ]);
+
+        return redirect()->route('devices.index')
+            ->with('success', 'Device berhasil ditambahkan');
+    }
+}
