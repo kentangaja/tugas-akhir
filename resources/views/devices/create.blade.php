@@ -2,27 +2,27 @@
 
 @section('content')
 <div class="container">
-    <h2>Tambah Device</h2>
+    <h2 class="text-white text-xl">Tambah Device</h2>
 
     <form method="POST" action="{{ route('devices.store') }}">
         @csrf
 
         <div>
-            <label>Nama Device</label><br>
+            <label class="text-white" >Nama Device</label><br>
             <input type="text" name="device_name" required>
         </div>
 
         <br>
 
         <div>
-            <label>Batas Suhu Kipas (opsional)</label><br>
+            <label class="text-white" >Batas Suhu Kipas (opsional)</label><br>
             <input type="number" step="0.1" name="fan_threshold">
         </div>
 
         <br>
 
         <div>
-            <label>Batas Kelembaban Tanah (opsional)</label><br>
+            <label class="text-white" >Batas Kelembaban Tanah (opsional)</label><br>
             <input type="number" name="soil_threshold">
         </div>
 

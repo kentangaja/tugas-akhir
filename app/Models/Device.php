@@ -14,6 +14,18 @@ class Device extends Model
         'soil_threshold'
     ];
 
+    protected $casts = [
+        'fan_threshold' => 'float',
+        'soil_threshold' => 'integer',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function sensorData()
     {
         return $this->hasMany(SensorData::class);

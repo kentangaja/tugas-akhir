@@ -12,4 +12,14 @@ class SensorData extends Model
         'humidity',
         'soil',
     ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    public function device()
+    {
+        return $this->belongsTo(Device::class);
+    }
 }

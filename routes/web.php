@@ -28,17 +28,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/devices', [DeviceController::class, 'index'])
         ->name('devices.index');
 
+    Route::get('/devices/create', [DeviceController::class, 'create'])
+        ->name('devices.create');
+
+    Route::post('/devices', [DeviceController::class, 'store'])
+        ->name('devices.store');
+
     Route::get('/devices/{device}', [DeviceController::class, 'show'])
         ->name('devices.show');
 
     Route::get('/devices/{device}/code', [DeviceController::class, 'code'])
         ->name('devices.code');
 
-    Route::get('/devices/create', [DeviceController::class, 'create'])
-    ->name('devices.create');
-
-    Route::post('/devices', [DeviceController::class, 'store'])
-    ->name('devices.store');
+    Route::get('/devices/{device}/latest-data', [DeviceController::class, 'getLatestData'])
+        ->name('devices.latest-data');
 });
 
 require __DIR__.'/auth.php';

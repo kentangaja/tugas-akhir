@@ -32,8 +32,17 @@
                                 {{ $device->device_name }}
                             </td>
 
-                            <td class="px-6 py-4 font-mono text-emerald-400">
-                                {{ Str::limit($device->api_key, 20) }}
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="font-mono text-emerald-400 text-sm">
+                                        {{ Str::limit($device->api_key, 20) }}
+                                    </span>
+                                    <button onclick="copyToClipboard('{{ $device->api_key }}', this)" 
+                                            class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded text-xs font-semibold transition"
+                                            title="Copy full API Key">
+                                        📋
+                                    </button>
+                                </div>
                             </td>
 
                             <td class="px-6 py-4 text-center">
@@ -56,4 +65,22 @@
 
     </div>
 </div>
+
+<script>
+function copyToClipboard(text, button) {
+    navigator.clipboard.writeText(text).then(() => {
+        const originalText = button.textContent;
+        button.textContent = '✅';
+        button.classList.add('bg-green-600', 'hover:bg-green-700');
+        button.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
+        
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.classList.remove('bg-green-600', 'hover:bg-green-700');
+            button.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+        }, 2000);
+    });
+}
+</script>
+
 @endsection

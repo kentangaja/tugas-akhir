@@ -48,4 +48,29 @@ class DeviceController extends Controller
         return redirect()->route('devices.index')
             ->with('success', 'Device berhasil ditambahkan');
     }
+
+    public function getLatestData(Device $device)
+    {
+        // Authorize: pastikan user punya device ini
+        if ($device->user_id !== auth()->id()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized'
+            ], 403);
+        }
+
+        $latest = $device->sensorData()->latest()->first();
+
+        if (!$latest) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No sensor data available',
+            ], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $latest,
+        ]);
+    }
 }
