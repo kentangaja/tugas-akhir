@@ -10,7 +10,12 @@ class DeviceController extends Controller
 {
     public function index()
     {
-        $devices = auth()->user()->devices;
+        if (auth()->check()) {
+            $devices = auth()->user()->devices;
+        } else {
+            $devices = collect();
+        }
+
         return view('devices.index', compact('devices'));
     }
 

@@ -1,86 +1,76 @@
-@extends('layouts.app')
+<x-app-layout>
+    <div class="min-h-screen text-gray-900 pb-20">
+        <main class="max-w-7xl mx-auto px-6 pt-12">
+            
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-medium tracking-tight">
+                        Connected <span class="italic font-normal text-emerald-700">Greenhouses</span>
+                    </h1>
+                    <p class="text-gray-500 mt-2">Manage and monitor your automated urban spaces.</p>
+                </div>
+                
+                @auth
+                    <a href="{{ route('devices.create') }}"
+                       class="bg-[#063b2a] text-white px-8 py-3 rounded-full text-sm font-medium hover:bg-[#052a1d] transition-all shadow-lg hover:scale-105">
+                       + Add New Station
+                    </a>
+                @endauth
+            </div>
 
-@section('content')
-<div class="min-h-screen bg-slate-900 text-white p-6">
-    <div class="max-w-6xl mx-auto">
+            <!-- <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-[#d4e9d4] p-6 rounded-[2.5rem] flex items-center justify-between">
+                    <span class="font-medium text-emerald-900">Total Systems</span>
+                    <span class="text-3xl font-bold text-emerald-900">{{ $devices->count() }}</span>
+                </div>
+            </div> -->
 
-        <!-- Header -->
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-2xl font-bold">My Devices</h2>
-
-            <a href="{{ route('devices.create') }}"
-               class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium shadow">
-                + Add Device
-            </a>
-        </div>
-
-        <!-- Card -->
-        <div class="bg-slate-800 rounded-xl shadow-lg overflow-hidden">
-            <table class="w-full text-sm">
-                <thead class="bg-slate-700 text-slate-300 uppercase text-xs">
-                    <tr>
-                        <th class="px-6 py-4 text-left">Device Name</th>
-                        <th class="px-6 py-4 text-left">API Key</th>
-                        <th class="px-6 py-4 text-center">Action</th>
-                    </tr>
-                </thead>
-
-                <tbody class="divide-y divide-slate-700">
-                    @forelse ($devices as $device)
-                        <tr class="hover:bg-slate-700 transition">
-                            <td class="px-6 py-4 font-medium">
-                                {{ $device->device_name }}
-                            </td>
-
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-2">
-                                    <span class="font-mono text-emerald-400 text-sm">
-                                        {{ Str::limit($device->api_key, 20) }}
-                                    </span>
-                                    <button onclick="copyToClipboard('{{ $device->api_key }}', this)" 
-                                            class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded text-xs font-semibold transition"
-                                            title="Copy full API Key">
-                                        📋
-                                    </button>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @forelse ($devices as $device)
+                    <div class="bg-[#f8faf8] p-8 rounded-[3rem] shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-[#d4e9d4] opacity-20 rounded-bl-[4rem] -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+                        
+                        <div class="relative">
+                            <div class="flex items-start justify-between mb-6">
+                                <div class="w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center text-2xl">
+                                    🌿
                                 </div>
-                            </td>
+                                <span class="bg-emerald-100 text-emerald-700 text-[10px] uppercase font-bold px-3 py-1 rounded-full">Active</span>
+                            </div>
 
-                            <td class="px-6 py-4 text-center">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ $device->device_name }}</h3>
+                            <p class="text-sm text-gray-400 mb-6 flex items-center gap-2">
+                                ID: <span class="font-mono">{{ substr($device->api_key, 0, 8) }}...</span>
+                            </p>
+
+                            <div class="flex items-center gap-3">
                                 <a href="{{ route('devices.show', $device->id) }}"
-                                   class="inline-block bg-blue-500 hover:bg-blue-600 px-3 py-1 rounded-md text-xs font-semibold">
-                                    View
+                                class="group/btn flex-1 flex items-center justify-center bg-[#063b2a] text-white py-3 px-6 rounded-2xl font-medium text-sm hover:text-black hover:bg-[#f8faf8] hover:border hover:border-[#063b2a] transition-all">
+                                    View Dashboard 
+                                    <svg xmlns="http://www.w3.org/2000/svg" 
+                                        fill="none" 
+                                        viewBox="0 0 24 24" 
+                                        stroke-width="1.5" 
+                                        stroke="currentColor" 
+                                        class="w-5 h-5 inline-block text-white group-hover/btn:text-black ms-1 transition-colors">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+                                    </svg>
                                 </a>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="3" class="px-6 py-8 text-center text-slate-400">
-                                No devices registered yet.
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
 
+                                <button onclick="copyToClipboard('{{ $device->api_key }}', this)" 
+                                        class="p-3 bg-gray-100 rounded-2xl hover:bg-gray-200 transition-colors shrink-0"
+                                        title="Copy API Key">
+                                    📋
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-span-full py-20 text-center bg-gray-50 rounded-[3rem] border-2 border-dashed border-gray-200">
+                        <p class="text-gray-400 italic">No devices found. Start your green journey today.</p>
+                    </div>
+                @endforelse
+            </div>
+        </main>
     </div>
-</div>
-
-<script>
-function copyToClipboard(text, button) {
-    navigator.clipboard.writeText(text).then(() => {
-        const originalText = button.textContent;
-        button.textContent = '✅';
-        button.classList.add('bg-green-600', 'hover:bg-green-700');
-        button.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
-        
-        setTimeout(() => {
-            button.textContent = originalText;
-            button.classList.remove('bg-green-600', 'hover:bg-green-700');
-            button.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
-        }, 2000);
-    });
-}
-</script>
-
-@endsection
+</x-app-layout>
