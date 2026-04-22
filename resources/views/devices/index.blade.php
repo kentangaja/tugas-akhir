@@ -44,6 +44,18 @@
                             </p>
 
                             <div class="flex items-center gap-3">
+                                <a href="{{ route('devices.code', $device->id) }}"
+                                class="bg-white border border-[#d4e9d4] text-black px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all shadow-sm">
+                                    View Code
+                                    <svg xmlns="http://www.w3.org/2000/svg" 
+                                        fill="none" 
+                                        viewBox="0 0 24 24" 
+                                        stroke-width="1.5" 
+                                        stroke="currentColor" 
+                                        class="w-5 h-5 inline-block text-black group-hover/btn:text-black ms-1 transition-colors">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+                                    </svg>
+                                </a>
                                 <a href="{{ route('devices.show', $device->id) }}"
                                 class="group/btn flex-1 flex items-center justify-center bg-[#063b2a] text-white py-3 px-6 rounded-2xl font-medium text-sm hover:text-black hover:bg-[#f8faf8] hover:border hover:border-[#063b2a] transition-all">
                                     View Dashboard 

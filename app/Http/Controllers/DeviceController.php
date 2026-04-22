@@ -22,7 +22,21 @@ class DeviceController extends Controller
     public function show(Device $device)
     {
         $latest = $device->sensorData()->latest()->first();
-        return view('devices.show', compact('device', 'latest'));
+
+        $history = $device->sensorData()
+                        ->latest()
+                        ->take(15) 
+                        ->get()
+                        ->reverse();
+
+        $labels = $history->pluck('created_at')->map(function($date) {
+            return $date->format('H:i');
+        });
+        
+        $tempData = $history->pluck('temperature');
+        $humData = $history->pluck('humidity');
+
+        return view('devices.show', compact('device', 'latest', 'labels', 'tempData', 'humData'));
     }
 
     public function code(Device $device)
