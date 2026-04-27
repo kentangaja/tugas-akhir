@@ -18,62 +18,94 @@
                 @endauth
             </div>
 
-            <!-- <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                <div class="bg-[#d4e9d4] p-6 rounded-[2.5rem] flex items-center justify-between">
-                    <span class="font-medium text-emerald-900">Total Systems</span>
-                    <span class="text-3xl font-bold text-emerald-900">{{ $devices->count() }}</span>
-                </div>
-            </div> -->
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 gap-8">
                 @forelse ($devices as $device)
-                    <div class="bg-[#f8faf8] p-8 rounded-[3rem] shadow-sm border border-gray-100 hover:shadow-md transition-shadow relative overflow-hidden group">
-                        <div class="absolute top-0 right-0 w-24 h-24 bg-[#d4e9d4] opacity-20 rounded-bl-[4rem] -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
-                        
-                        <div class="relative">
-                            <div class="flex items-start justify-between mb-6">
-                                <div class="w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center text-2xl">
-                                    🌿
+                    <div class="bg-[#f8faf8] p-8 rounded-[3rem] shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                        {{-- Device Header Card --}}
+                        <div class="relative overflow-hidden group mb-8">
+                            <div class="absolute top-0 right-0 w-24 h-24 bg-[#d4e9d4] opacity-20 rounded-bl-[4rem] -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+                            
+                            <div class="relative">
+                                <div class="flex items-start justify-between mb-6">
+                                    <div>
+                                        <div class="flex items-center gap-3 mb-3">
+                                            <div class="w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center text-2xl">
+                                                🌿
+                                            </div>
+                                            <div>
+                                                <h3 class="text-2xl font-bold text-gray-800">{{ $device->device_name }}</h3>
+                                                <p class="text-sm text-gray-400 flex items-center gap-2">
+                                                    ID: <span class="font-mono">{{ substr($device->api_key, 0, 8) }}...</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="bg-emerald-100 text-emerald-700 text-[10px] uppercase font-bold px-3 py-1 rounded-full">Active</span>
                                 </div>
-                                <span class="bg-emerald-100 text-emerald-700 text-[10px] uppercase font-bold px-3 py-1 rounded-full">Active</span>
-                            </div>
 
-                            <h3 class="text-2xl font-bold text-gray-800 mb-1">{{ $device->device_name }}</h3>
-                            <p class="text-sm text-gray-400 mb-6 flex items-center gap-2">
-                                ID: <span class="font-mono">{{ substr($device->api_key, 0, 8) }}...</span>
-                            </p>
+                                {{-- Action Buttons --}}
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <a href="{{ route('devices.code', $device->id) }}"
+                                    class="bg-white border border-[#d4e9d4] text-black px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all shadow-sm hover:bg-gray-50">
+                                        View Code
+                                        <svg xmlns="http://www.w3.org/2000/svg" 
+                                            fill="none" 
+                                            viewBox="0 0 24 24" 
+                                            stroke-width="1.5" 
+                                            stroke="currentColor" 
+                                            class="w-4 h-4 inline-block text-black ms-1">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="m4 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+                                        </svg>
+                                    </a>
+                                    
+                                    <a href="{{ route('devices.show', $device->id) }}"
+                                    class="flex-1 flex items-center justify-center bg-[#063b2a] text-white py-2.5 px-4 rounded-2xl font-medium text-sm hover:bg-[#052a1d] transition-all">
+                                        View Dashboard 
+                                        <svg xmlns="http://www.w3.org/2000/svg" 
+                                            fill="none" 
+                                            viewBox="0 0 24 24" 
+                                            stroke-width="1.5" 
+                                            stroke="currentColor" 
+                                            class="w-4 h-4 inline-block text-white ms-1">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="m4 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+                                        </svg>
+                                    </a>
 
-                            <div class="flex items-center gap-3">
-                                <a href="{{ route('devices.code', $device->id) }}"
-                                class="bg-white border border-[#d4e9d4] text-black px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all shadow-sm">
-                                    View Code
-                                    <svg xmlns="http://www.w3.org/2000/svg" 
-                                        fill="none" 
-                                        viewBox="0 0 24 24" 
-                                        stroke-width="1.5" 
-                                        stroke="currentColor" 
-                                        class="w-5 h-5 inline-block text-black group-hover/btn:text-black ms-1 transition-colors">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4 19.5 15-15m0 0H8.25m11.25 0v11.25" />
-                                    </svg>
-                                </a>
-                                <a href="{{ route('devices.show', $device->id) }}"
-                                class="group/btn flex-1 flex items-center justify-center bg-[#063b2a] text-white py-3 px-6 rounded-2xl font-medium text-sm hover:text-black hover:bg-[#f8faf8] hover:border hover:border-[#063b2a] transition-all">
-                                    View Dashboard 
-                                    <svg xmlns="http://www.w3.org/2000/svg" 
-                                        fill="none" 
-                                        viewBox="0 0 24 24" 
-                                        stroke-width="1.5" 
-                                        stroke="currentColor" 
-                                        class="w-5 h-5 inline-block text-white group-hover/btn:text-black ms-1 transition-colors">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="m4 19.5 15-15m0 0H8.25m11.25 0v11.25" />
-                                    </svg>
-                                </a>
+                                    <a href="{{ route('devices.edit', $device->id) }}"
+                                    class="bg-white border border-blue-200 text-blue-600 px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all shadow-sm hover:bg-blue-50">
+                                        Edit
+                                        <svg xmlns="http://www.w3.org/2000/svg" 
+                                            fill="none" 
+                                            viewBox="0 0 24 24" 
+                                            stroke-width="1.5" 
+                                            stroke="currentColor" 
+                                            class="w-4 h-4 inline-block text-blue-600 ms-1">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                        </svg>
+                                    </a>
 
-                                <button onclick="copyToClipboard('{{ $device->api_key }}', this)" 
-                                        class="p-3 bg-gray-100 rounded-2xl hover:bg-gray-200 transition-colors shrink-0"
-                                        title="Copy API Key">
-                                    📋
-                                </button>
+                                    <form method="POST" action="{{ route('devices.destroy', $device->id) }}" class="inline" onsubmit="return confirm('Yakin ingin menghapus device ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="bg-white border border-red-200 text-red-600 px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all shadow-sm hover:bg-red-50">
+                                            Delete
+                                            <svg xmlns="http://www.w3.org/2000/svg" 
+                                                fill="none" 
+                                                viewBox="0 0 24 24" 
+                                                stroke-width="1.5" 
+                                                stroke="currentColor" 
+                                                class="w-4 h-4 inline-block text-red-600 ms-1">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 2.991a.75.75 0 00-1.324-.74L3.06 19.748a.75.75 0 001.323.74m6.14-12.753l12.432 12.432c.307.307.47.753.47 1.207V21a.75.75 0 01-.75.75H2.991a.75.75 0 01-.75-.75V4.457c0-.454.163-.9.47-1.207L9.5 9z" />
+                                            </svg>
+                                        </button>
+                                    </form>
+
+                                    <button onclick="copyToClipboard('{{ $device->api_key }}', this)" 
+                                            class="p-2.5 bg-gray-100 rounded-2xl hover:bg-gray-200 transition-colors"
+                                            title="Copy API Key">
+                                        📋
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -85,4 +117,16 @@
             </div>
         </main>
     </div>
+
+    <script>
+        function copyToClipboard(text, element) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = element.textContent;
+                element.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    element.textContent = originalText;
+                }, 2000);
+            });
+        }
+    </script>
 </x-app-layout>

@@ -32,14 +32,15 @@ class GoogleAuthController extends Controller
                     'email' => $googleUser->getEmail(),
                     'google_token' => $googleUser->token,
                     'email_verified_at' => now(),
+                    'password' => bcrypt(str()->random(16)), 
                 ]
             );
 
             Auth::login($user);
 
-            return redirect()->intended(route('dashboard', absolute: false));
+            return redirect()->intended(route('home', absolute: false));
         } catch (\Exception $e) {
-            return redirect()->route('login')->with('error', 'Gagal login dengan Google');
+            return redirect()->route('login')->with('status', 'Gagal login dengan Google');
         }
     }
 }

@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * @property-read HasMany $devices
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -24,6 +28,7 @@ class User extends Authenticatable
         'password',
         'google_id',
         'google_token',
+        'email_verified_at',
     ];
 
     /**
@@ -50,7 +55,7 @@ class User extends Authenticatable
         ];
     }
 
-    public function devices()
+    public function devices(): HasMany
     {
         return $this->hasMany(Device::class);
     }

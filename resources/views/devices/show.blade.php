@@ -92,8 +92,161 @@
                             </span>
                         </div>
                     </div>
-
                 </div>
+            </div>
+
+            {{-- Sensor Data Table --}}
+            <div class="border-t border-gray-200 pt-8 mt-8">
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-4">
+                        Sensor Data
+                    </h4>
+                                
+                    {{-- Stats Cards --}}
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-2xl border border-orange-200">
+                            <p class="text-sm text-orange-700 font-medium mb-1">
+                                Rata-rata Minggu Ini
+                            </p>
+                            <p class="text-2xl font-bold text-orange-900">
+                                {{ number_format($device->getWeeklyAverageTemperature() ?? 0, 1) }}°C
+                            </p>
+                        </div>
+                        <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-2xl border border-blue-200">
+                            <p class="text-sm text-blue-700 font-medium mb-1">
+                                Rata-rata Hari Ini
+                            </p>
+                            <p class="text-2xl font-bold text-blue-900">
+                                {{ number_format($device->getDailyAverageTemperature() ?? 0, 1) }}°C
+                            </p>
+                        </div>
+                        <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-2xl border border-emerald-200">
+                            <p class="text-sm text-emerald-700 font-medium mb-1">
+                                Total Data
+                            </p>
+                            <p class="text-2xl font-bold text-emerald-900">
+                                {{ $device->sensorData()->count() }}
+                            </p>
+                        </div>
+                    </div>
+
+                    {{-- Weekly Data Table --}}
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-gray-100 border border-gray-200">
+                                    <th class="px-4 py-3 text-left font-semibold text-gray-700">
+                                        Tanggal
+                                    </th>
+                                    <th class="px-4 py-3 text-left font-semibold text-gray-700">
+                                        Rata-rata Suhu
+                                    </th>
+                                    <th class="px-4 py-3 text-left font-semibold text-gray-700">
+                                        Rata-rata Kelembaban
+                                    </th>
+                                    <th class="px-4 py-3 text-left font-semibold text-gray-700">
+                                        Rata-rata Tanah
+                                    </th>
+                                    <th class="px-4 py-3 text-left font-semibold text-gray-700">
+                                        Data Points
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($device->getWeeklyTemperatureByDay() as $data)
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-medium text-gray-800">
+                                        {{ \Carbon\Carbon::parse($data->date)->format('d M Y') }}
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                            {{ number_format($data->avg_temperature ?? 0, 1) }}°C
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                            {{ number_format($data->avg_humidity ?? 0, 1) }}%
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                            {{ number_format($data->avg_soil ?? 0, 1) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3 text-gray-600">
+                                        {{ $data->count }}
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="5" class="px-4 py-6 text-center text-gray-500 italic">
+                                        Tidak ada data sensor tersedia untuk minggu ini
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {{-- Daily Data Section --}}
+                @if ($device->getDailyTemperatureByHour()->count() > 0)
+                <div class="mt-8 pt-8 border-t border-gray-200">
+                    <h5 class="text-md font-semibold text-gray-800 mb-4">
+                        Data Per Jam Hari Ini
+                    </h5>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead>
+                                <tr class="bg-gray-100 border border-gray-200">
+                                    <th class="px-4 py-3 text-left font-semibold text-gray-700">
+                                        Jam
+                                    </th>
+                                    <th class="px-4 py-3 text-left font-semibold text-gray-700">
+                                        Rata-rata Suhu
+                                    </th>
+                                    <th class="px-4 py-3 text-left font-semibold text-gray-700">
+                                        Rata-rata Kelembaban
+                                    </th>
+                                    <th class="px-4 py-3 text-left font-semibold text-gray-700">
+                                        Rata-rata Tanah
+                                    </th>
+                                    <th class="px-4 py-3 text-left font-semibold text-gray-700">
+                                        Data Points
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            @foreach ($device->getDailyTemperatureByHour() as $data)
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="px-4 py-3 font-medium text-gray-800">
+                                        {{ str_pad($data->hour, 2, '0', STR_PAD_LEFT) }}:00
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                            {{ number_format($data->avg_temperature ?? 0, 1) }}°C
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                            {{ number_format($data->avg_humidity ?? 0, 1) }}%
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                            {{ number_format($data->avg_soil ?? 0, 1) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3 text-gray-600">
+                                        {{ $data->count }}
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                @endif
             </div>
         </main>
     </div>
