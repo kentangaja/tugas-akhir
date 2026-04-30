@@ -8,6 +8,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 </head>
 <body class="font-sans antialiased bg-white text-gray-900">
     <div class="min-h-screen">
@@ -26,13 +27,26 @@
         </main>
     </div>
 
+    <!-- Loading Screen -->
+    <div x-data="{ loading: false }" 
+         x-show="loading" 
+         x-transition.opacity.duration.500ms
+         @loading.window="loading = $event.detail.isLoading" 
+         class="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-90">
+        
+        <div class="flex flex-col items-center">
+            <video
+                x-init="$el.playbackRate = 2.5" 
+                autoplay 
+                loop 
+                muted 
+                playsinline 
+                class="w-64 h-64">
+                <source src="{{ asset('img/loading.webm') }}" type="video/webm">
+                Your browser does not support the video tag.
+            </video>         
+            <p class="mt-4 text-gray-600 font-medium">Mohon tunggu...</p>
+        </div>
+    </div>
 </body>
-
-<div x-data="{ loading: false }" 
-     x-show="loading" 
-     @loading.window="loading = true" 
-     class="fixed inset-0 z-50 flex items-center justify-center bg-white opacity-75">
-    <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
-</div>
-
 </html>
