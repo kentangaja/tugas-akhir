@@ -40,7 +40,8 @@ class GoogleAuthController extends Controller
 
             return redirect()->intended(route('home', absolute: false));
         } catch (\Exception $e) {
-            return redirect()->route('login')->with('status', 'Gagal login dengan Google');
+            \Log::error('Google OAuth Error: ' . $e->getMessage());
+            return redirect()->route('login')->with('status', 'Error: ' . $e->getMessage());
         }
     }
 }
