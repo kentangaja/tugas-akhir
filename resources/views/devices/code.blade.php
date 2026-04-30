@@ -4,8 +4,8 @@
             
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                 <div>
-                    <a href="{{ route('devices.show', $device->id) }}" class="text-sm text-gray-400 hover:text-emerald-600 transition-colors">
-                        ← Back to Monitoring
+                    <a href="{{ route('dashboard') }}" class="text-sm text-gray-400 hover:text-emerald-600 transition-colors">
+                        ← Back to Dashboard
                     </a>
                     <h2 class="text-3xl font-bold text-gray-800 mt-2">ESP8266 Source Code</h2>
                     <p class="text-gray-500 text-sm mt-1">Configure your device with the sketch below</p>
