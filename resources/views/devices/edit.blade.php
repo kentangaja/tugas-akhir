@@ -8,14 +8,15 @@
                         ← Back to Devices
                     </a>
                     <h1 class="text-4xl md:text-5xl font-medium tracking-tight text-gray-900">
-                        Add New <span class="italic font-normal text-emerald-700">Station</span>
+                        Edit <span class="italic font-normal text-emerald-700">Station</span>
                     </h1>
-                    <p class="text-gray-500 mt-2">Configure your new greenhouse monitoring station.</p>
+                    <p class="text-gray-500 mt-2">Update your greenhouse monitoring station configuration.</p>
                 </div>
                 <div class="max-w-2xl">
                     <div class="bg-[#f8faf8] p-8 rounded-[3rem] shadow-sm border border-gray-100">
-                        <form method="POST" action="{{ route('devices.store') }}" class="space-y-6">
+                        <form method="POST" action="{{ route('devices.update', $device->id) }}" class="space-y-6">
                             @csrf
+                            @method('PATCH')
 
                             <!-- Device Name -->
                             <div>
@@ -28,6 +29,7 @@
                                     id="device_name"
                                     name="device_name" 
                                     required
+                                    value="{{ old('device_name', $device->device_name) }}"
                                     placeholder="e.g., Main Greenhouse, Urban Farm #1"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all @error('device_name') border-red-500 @enderror"
                                 >
@@ -47,6 +49,7 @@
                                     id="fan_threshold"
                                     step="0.1" 
                                     name="fan_threshold"
+                                    value="{{ old('fan_threshold', $device->fan_threshold) }}"
                                     placeholder="e.g., 28.5"
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all @error('fan_threshold') border-red-500 @enderror"
                                 >
@@ -66,6 +69,7 @@
                                     type="number" 
                                     id="soil_threshold"
                                     name="soil_threshold"
+                                    value="{{ old('soil_threshold', $device->soil_threshold) }}"
                                     placeholder="e.g., 40"
                                     min="0"
                                     max="100"
@@ -83,7 +87,7 @@
                                     type="submit"
                                     class="flex-1 bg-[#063b2a] text-white py-3 px-6 rounded-2xl font-semibold hover:bg-[#052a1d] transition-all shadow-lg hover:scale-105 text-sm"
                                 >
-                                    Create Station
+                                    Update Station
                                 </button>
                                 <a 
                                     href="{{ route('devices.index') }}"
@@ -94,23 +98,8 @@
                             </div>
                         </form>
                     </div>
-
-                    <!-- Info Box -->
-                    <div class="mt-8 bg-emerald-50 border border-emerald-200 rounded-2xl p-6">
-                        <div class="flex gap-3">
-                            <div class="text-2xl">ℹ️</div>
-                            <div>
-                                <h3 class="font-semibold text-emerald-900 mb-1">Getting Started</h3>
-                                <p class="text-sm text-emerald-800">
-                                    After creating your station, you'll receive an API key to connect your Arduino or ESP32 device. 
-                                    Visit the "View Code" section to see the code you need to upload.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
-
         </main>
     </div>
 </x-app-layout>

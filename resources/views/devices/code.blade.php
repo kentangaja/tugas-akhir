@@ -1,12 +1,38 @@
-@extends('layouts.app')
+<x-app-layout>
+    <div class="min-h-screen bg-white py-12 px-6">
+        <div class="max-w-4xl mx-auto">
+            
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                <div>
+                    <a href="{{ route('devices.show', $device->id) }}" class="text-sm text-gray-400 hover:text-emerald-600 transition-colors">
+                        ← Back to Monitoring
+                    </a>
+                    <h2 class="text-3xl font-bold text-gray-800 mt-2">ESP8266 Source Code</h2>
+                    <p class="text-gray-500 text-sm mt-1">Configure your device with the sketch below</p>
+                </div>
 
-@section('content')
-<div class="container">
-    <h2>ESP8266 Source Code</h2>
-    <p>Copy & paste this code into Arduino IDE</p>
+                <button onclick="copyToClipboard()" id="copyBtn" 
+                    class="flex items-center gap-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 px-5 py-2.5 rounded-2xl text-sm font-bold transition-all border border-emerald-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75" />
+                    </svg>
+                    <span>Copy Code</span>
+                </button>
+            </div>
 
-<pre style="background:#111;color:#0f0;padding:15px;">
-#include &lt;ESP8266WiFi.h&gt;
+            <div class="relative group">
+                <div class="bg-zinc-900 rounded-t-[2rem] px-6 py-4 flex items-center gap-2 border-b border-zinc-800">
+                    <div class="flex gap-1.5">
+                        <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+                    </div>
+                    <span class="ml-4 text-xs font-mono text-zinc-500">verte_maison_esp8266.ino</span>
+                </div>
+
+                <div class="bg-zinc-950 rounded-b-[2rem] p-6 md:p-8 overflow-hidden shadow-2xl border-x border-b border-zinc-900">
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <pre id="codeBlock" class="text-sm md:text-base font-mono leading-relaxed text-zinc-300"><code>#include &lt;ESP8266WiFi.h&gt;
 #include &lt;ESP8266HTTPClient.h&gt;
 #include &lt;ArduinoJson.h&gt;
 #include &lt;DHT.h&gt;
@@ -20,214 +46,123 @@ DHT dht(DHTPIN, DHTTYPE);
 // ======================== KONFIGURASI LOKAL ========================
 const char* ssid = "NAMA_WIFI_ANDA";         
 const char* password = "PASSWORD_WIFI_ANDA"; 
-const char* serverIP = "192.168.1.15"; 
+const char* serverIP = "{{ request()->getHost() }}"; 
 const int serverPort = 8000;
 const char* serverPath = "/api/sensor-data";
-const char* apiKey = "API_KEY_DARI_LARAVEL"; 
+const char* apiKey = "{{ $device->api_key ?? 'API_KEY_ANDA' }}"; 
 // ===================================================================
 
 const int SEND_INTERVAL = 5000;
-int failCount = 0;
 
 void setup() {
   Serial.begin(115200);
-  delay(100);
   dht.begin();
-  
-  Serial.println("\n\n========================================");
-  Serial.println("=== ESP8266 -> Laravel Sensor Data ===");
-  Serial.println("========================================");
-  Serial.print("API Key: ");
-  Serial.println(String(apiKey).substring(0, 10) + "...");
-  Serial.println("");
-  
   connectToWiFi();
 }
 
 void loop() {
-  if (WiFi.status() != WL_CONNECTED) {
-    Serial.println("⚠️  WiFi terputus, mencoba reconnect...");
-    connectToWiFi();
-  }
+  if (WiFi.status() != WL_CONNECTED) connectToWiFi();
 
-  // Baca sensor
   float temperature = dht.readTemperature();
   float humidity = dht.readHumidity();
   int soilMoisture = analogRead(SOIL_PIN);
 
-  // Validasi sensor DHT
-  if (isnan(temperature)) {
-    Serial.println("❌ ERROR SENSOR DHT: Temperature tidak terbaca!");
-    Serial.println("   → Periksa kabel DHT11 ke pin D4");
-    Serial.println("   → Pastikan DHT sudah 'dht.begin()' di setup");
-    delay(2000);
-    return;
+  if (!isnan(temperature) && !isnan(humidity)) {
+    sendDataToServer(temperature, humidity, soilMoisture);
   }
-
-  if (isnan(humidity)) {
-    Serial.println("❌ ERROR SENSOR DHT: Humidity tidak terbaca!");
-    Serial.println("   → Periksa koneksi DHT11");
-    delay(2000);
-    return;
-  }
-
-  // Validasi sensor tanah
-  if (soilMoisture &lt; 0 || soilMoisture &gt; 1023) {
-    Serial.println("❌ ERROR SENSOR TANAH: Nilai analog tidak valid!");
-    Serial.print("   → Nilai terbaca: ");
-    Serial.println(soilMoisture);
-    delay(2000);
-    return;
-  }
-
-  sendDataToServer(temperature, humidity, soilMoisture);
   delay(SEND_INTERVAL);
 }
 
 void connectToWiFi() {
-  WiFi.mode(WIFI_STA);
-  WiFi.disconnect();
-  delay(100);
   WiFi.begin(ssid, password);
-  
-  Serial.print("📡 Menghubungkan ke WiFi: ");
-  Serial.println(ssid);
-  
-  int attempts = 0;
-  while (WiFi.status() != WL_CONNECTED &amp;&amp; attempts &lt; 20) {
+  while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
-    attempts++;
   }
-  
-  if (WiFi.status() == WL_CONNECTED) {
-    Serial.println("\n✅ WiFi Terhubung!");
-    Serial.print("   IP ESP8266: ");
-    Serial.println(WiFi.localIP());
-    Serial.println("");
-    failCount = 0;
-  } else {
-    Serial.println("\n❌ ERROR WIFI: Tidak bisa terhubung ke WiFi!");
-    Serial.println("   → Periksa nama WiFi (ssid)");
-    Serial.println("   → Periksa password WiFi");
-    Serial.println("   → Pastikan WiFi dalam jangkauan");
-    Serial.print("   → Status: ");
-    Serial.println(WiFi.status());
-  }
+  Serial.println("\n✅ Connected!");
 }
 
-void sendDataToServer(float temp, float humidity, int soil) {
+void sendDataToServer(float temp, float hum, int soil) {
   WiFiClient client;
   HTTPClient http;
-  
   String url = "http://" + String(serverIP) + ":" + String(serverPort) + serverPath;
-  
-  Serial.println("--- MENGIRIM DATA SENSOR ---");
-  Serial.print("URL: ");
-  Serial.println(url);
 
-  // Setup HTTP
-  if (!http.begin(client, url)) {
-    Serial.println("❌ ERROR KONEKSI HTTP: Gagal setup URL!");
-    Serial.println("   → Periksa serverIP: " + String(serverIP));
-    Serial.println("   → Periksa serverPort: " + String(serverPort));
-    return;
+  if (http.begin(client, url)) {
+    http.addHeader("Content-Type", "application/json");
+    http.addHeader("Authorization", "Bearer " + String(apiKey));
+
+    StaticJsonDocument&lt;200&gt; doc;
+    doc["temperature"] = temp;
+    doc["humidity"] = hum;
+    doc["soil"] = soil;
+
+    String payload;
+    serializeJson(doc, payload);
+    int httpCode = http.POST(payload);
+    http.end();
   }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
 
-  http.addHeader("Content-Type", "application/json");
-  
-  // Bearer Token
-  String authHeader = "Bearer " + String(apiKey);
-  http.addHeader("Authorization", authHeader);
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gray-50 p-6 rounded-[2rem] border border-gray-100">
+                    <span class="text-emerald-600 font-bold text-xl">01</span>
+                    <h4 class="font-bold text-gray-800 mt-2">Libraries</h4>
+                    <p class="text-xs text-gray-500 mt-1">Install DHT sensor, ArduinoJson, and ESP8266 boards via Library Manager.</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-[2rem] border border-gray-100">
+                    <span class="text-emerald-600 font-bold text-xl">02</span>
+                    <h4 class="font-bold text-gray-800 mt-2">Wiring</h4>
+                    <p class="text-xs text-gray-500 mt-1">Connect DHT11 to Pin D4 and Soil Moisture to Pin A0 on your NodeMCU.</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-[2rem] border border-gray-100">
+                    <span class="text-emerald-600 font-bold text-xl">03</span>
+                    <h4 class="font-bold text-gray-800 mt-2">Server Host</h4>
+                    <p class="text-xs text-gray-500 mt-1">Ensure your laptop and ESP8266 are on the same WiFi network.</p>
+                </div>
+            </div>
 
-  // Siapkan JSON
-  StaticJsonDocument&lt;200&gt; doc;
-  doc["temperature"] = temp;    
-  doc["humidity"] = humidity;    
-  doc["soil"] = soil;            
+        </div>
+    </div>
 
-  String payload;
-  serializeJson(doc, payload);
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #09090b;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #27272a;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #3f3f46;
+        }
+    </style>
 
-  Serial.println("📤 Payload: " + payload);
-  
-  // Kirim POST request
-  int httpCode = http.POST(payload);
+    <script>
+        function copyToClipboard() {
+            const code = document.getElementById('codeBlock').innerText;
+            const btn = document.getElementById('copyBtn');
+            const originalText = btn.innerHTML;
 
-  Serial.print("📨 HTTP Response Code: ");
-  Serial.println(httpCode);
+            navigator.clipboard.writeText(code).then(() => {
+                btn.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-emerald-500">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                    </svg>
+                    <span class="text-emerald-500">Copied!</span>
+                `;
+                btn.classList.add('bg-emerald-100');
 
-  if (httpCode &gt; 0) {
-    String response = http.getString();
-    
-    if (httpCode == 200 || httpCode == 201) {
-      Serial.println("✅ SUKSES! Data tersimpan di database");
-      Serial.println("   Respon: " + response);
-      failCount = 0;
-    } 
-    else if (httpCode == 401) {
-      Serial.println("❌ ERROR AUTH (401): API Key tidak valid!");
-      Serial.println("   → Copy API Key yang benar dari Laravel");
-      Serial.println("   → Pastikan format: const char* apiKey = \"...\";");
-      Serial.println("   → Respon: " + response);
-      failCount++;
-    }
-    else if (httpCode == 422) {
-      Serial.println("❌ ERROR VALIDASI (422): Data tidak sesuai format!");
-      Serial.println("   → Pastikan ada field: temperature, humidity, soil");
-      Serial.println("   → Respon: " + response);
-      failCount++;
-    }
-    else if (httpCode == 500) {
-      Serial.println("❌ ERROR SERVER (500): Error di Laravel!");
-      Serial.println("   → Cek logs Laravel: php artisan log:tail");
-      Serial.println("   → Respon: " + response);
-      failCount++;
-    }
-    else {
-      Serial.print("⚠️  Status tidak terduga (");
-      Serial.print(httpCode);
-      Serial.println(")");
-      Serial.println("   Respon: " + response);
-      failCount++;
-    }
-  } 
-  else {
-    String errorMsg = http.errorToString(httpCode);
-    
-    Serial.print("❌ ERROR KONEKSI (");
-    Serial.print(httpCode);
-    Serial.println("): " + errorMsg);
-    
-    if (httpCode == HTTPC_ERROR_CONNECTION_REFUSED) {
-      Serial.println("   → Laravel server tidak running");
-      Serial.println("   → Jalankan: php artisan serve --host=0.0.0.0");
-    }
-    else if (httpCode == HTTPC_ERROR_SEND_HEADER_FAILED) {
-      Serial.println("   → Gagal mengirim header");
-      Serial.println("   → Periksa WiFi connection");
-    }
-    else if (httpCode == HTTPC_ERROR_SEND_PAYLOAD_FAILED) {
-      Serial.println("   → Gagal mengirim data");
-      Serial.println("   → Periksa koneksi internet");
-    }
-    else if (httpCode == HTTPC_ERROR_NOT_CONNECTED) {
-      Serial.println("   → Tidak terhubung ke server");
-      Serial.println("   → Periksa IP dan Port server");
-    }
-    
-    failCount++;
-  }
-
-  // Summary
-  Serial.print("📊 Total gagal: ");
-  Serial.print(failCount);
-  Serial.println(" kali");
-  Serial.println("");
-
-  http.end();
-}
-</pre>
-
-</div>
-@endsection
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('bg-emerald-100');
+                }, 2000);
+            });
+        }
+    </script>
+</x-app-layout>

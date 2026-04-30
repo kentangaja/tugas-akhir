@@ -10,21 +10,32 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
+
+// Mengarahkan halaman utama '/' langsung ke view dashboard tanpa proteksi login
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('home');
+})->name('home');
 
-Route::get('/dashboard', function () {
-    return redirect()->route('devices.index');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/menu', function () {
+    return view('menu');
+})->name('menu');
 
-Route::middleware('auth')->group(function () {
+Route::get('/tutorial', function () {
+    return view('tutorial');
+})->name('tutorial');
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
 
-    // Device routes (IoT UI)
+Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'store'])
+    ->name('contact.store');
+
+Route::get('/team', function () {
+    return view('team');
+})->name('team');
+
+Route::middleware(['auth'])->group(function () {
     Route::get('/devices', [DeviceController::class, 'index'])
         ->name('devices.index');
 
@@ -40,8 +51,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/devices/{device}/code', [DeviceController::class, 'code'])
         ->name('devices.code');
 
+    Route::get('/devices/{device}/edit', [DeviceController::class, 'edit'])
+        ->name('devices.edit');
+
+    Route::patch('/devices/{device}', [DeviceController::class, 'update'])
+        ->name('devices.update');
+
+    Route::delete('/devices/{device}', [DeviceController::class, 'destroy'])
+        ->name('devices.destroy');
+
     Route::get('/devices/{device}/latest-data', [DeviceController::class, 'getLatestData'])
         ->name('devices.latest-data');
+        
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');    
 });
+
 
 require __DIR__.'/auth.php';
