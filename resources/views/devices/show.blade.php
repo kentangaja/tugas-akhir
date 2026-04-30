@@ -95,42 +95,39 @@
                 </div>
             </div>
 
-            {{-- Sensor Data Table --}}
             <div class="border-t border-gray-200 pt-8 mt-8">
                 <div class="mb-6">
                     <h4 class="text-lg font-semibold text-gray-800 mb-4">
                         Sensor Data
                     </h4>
                                 
-                    {{-- Stats Cards --}}
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                        <div class="bg-gradient-to-br from-orange-50 to-orange-100 p-4 rounded-2xl border border-orange-200">
-                            <p class="text-sm text-orange-700 font-medium mb-1">
+                        <div class="p-4 rounded-2xl border border-emerald-500">
+                            <p class="text-sm text-emerald-500 font-medium mb-1">
                                 Rata-rata Minggu Ini
                             </p>
-                            <p class="text-2xl font-bold text-orange-900">
+                            <p class="text-2xl font-bold text-emerald-500">
                                 {{ number_format($device->getWeeklyAverageTemperature() ?? 0, 1) }}°C
                             </p>
                         </div>
-                        <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-2xl border border-blue-200">
-                            <p class="text-sm text-blue-700 font-medium mb-1">
+                        <div class="p-4 rounded-2xl border border-emerald-500">
+                            <p class="text-sm text-emerald-500 font-medium mb-1">
                                 Rata-rata Hari Ini
                             </p>
-                            <p class="text-2xl font-bold text-blue-900">
+                            <p class="text-2xl font-bold text-emerald-500">
                                 {{ number_format($device->getDailyAverageTemperature() ?? 0, 1) }}°C
                             </p>
                         </div>
-                        <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-2xl border border-emerald-200">
-                            <p class="text-sm text-emerald-700 font-medium mb-1">
+                        <div class="p-4 rounded-2xl border border-emerald-500">
+                            <p class="text-sm text-emerald-500 font-medium mb-1">
                                 Total Data
                             </p>
-                            <p class="text-2xl font-bold text-emerald-900">
+                            <p class="text-2xl font-bold text-emerald-500">
                                 {{ $device->sensorData()->count() }}
                             </p>
                         </div>
                     </div>
 
-                    {{-- Weekly Data Table --}}
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm">
                             <thead>
