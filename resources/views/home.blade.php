@@ -62,11 +62,11 @@
                     <div class="bg-gray-200 w-full h-56 md:h-64 rounded-[3.5rem] relative overflow-hidden shadow-inner">
                         
                         <div class="absolute inset-0 flex items-center justify-center text-gray-400 italic">
-                            [ Gambar Utama ]
+                            <img src="{{ asset('img/img.jpeg') }}" alt="">
                         </div>
 
-                        <div class="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md p-6 rounded-[2.5rem] max-w-[280px] shadow-sm">
-                            <p class="text-xs md:text-sm text-gray-800 leading-relaxed font-medium">
+                        <div class="absolute bottom-6 left-6 bg-white/10 backdrop-blur-md p-6 rounded-[2.5rem] max-w-[280px] shadow-sm">
+                            <p class="text-xs md:text-sm text-white leading-relaxed font-medium">
                                 We believe that the future of cities lies in smart, eco-friendly solutions that address the pressing challenges of urbanization.
                             </p>
                         </div>
