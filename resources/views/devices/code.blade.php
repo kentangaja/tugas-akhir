@@ -4,7 +4,7 @@
             
             <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                 <div>
-                    <a href="{{ route('dashboard') }}" class="text-sm text-gray-400 hover:text-emerald-600 transition-colors">
+                    <a href="{{ route('devices.index') }}" class="text-sm text-gray-400 hover:text-emerald-600 transition-colors">
                         ← Back to Dashboard
                     </a>
                     <h2 class="text-3xl font-bold text-gray-800 mt-2">ESP8266 Source Code</h2>
