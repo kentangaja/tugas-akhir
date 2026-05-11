@@ -34,140 +34,140 @@
                     <div class="overflow-x-auto custom-scrollbar">
                         <pre id="codeBlock" class="text-sm md:text-base font-mono leading-relaxed text-zinc-300">
                             <code>
-                                #include <ESP8266WiFi.h>
-                                #include <ESP8266HTTPClient.h>
-                                #include <ArduinoJson.h>
-                                #include <DHT.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
+#include <ArduinoJson.h>
+#include <DHT.h>
 
-                                #define DHTPIN D4     
-                                #define DHTTYPE DHT11 
-                                #define SOIL_PIN A0   
+#define DHTPIN D4     
+#define DHTTYPE DHT11 
+#define SOIL_PIN A0   
 
-                                // Definisi Pin Relay
-                                #define RELAY_PUMP D1  
-                                #define RELAY_FAN  D2  
+// Definisi Pin Relay
+#define RELAY_PUMP D1  
+#define RELAY_FAN  D2  
 
-                                // --- KONFIGURASI AMBANG BATAS (THRESHOLD) ---
-                                const int SOIL_DRY_THRESHOLD = 750;   
-                                const int SOIL_WET_THRESHOLD = 500;   
-                                const float TEMP_HOT_THRESHOLD = 32.0; 
+// --- KONFIGURASI AMBANG BATAS (THRESHOLD) ---
+const int SOIL_DRY_THRESHOLD = 750;   
+const int SOIL_WET_THRESHOLD = 500;   
+const float TEMP_HOT_THRESHOLD = 32.0; 
 
-                                DHT dht(DHTPIN, DHTTYPE);
+DHT dht(DHTPIN, DHTTYPE);
 
-                                // ======================== KONFIGURASI LOKAL ========================
-                                const char* ssid = "WIfi_Name";         
-                                const char* password = "Wifi_Password"; 
-                                const char* serverIP = "{{ request()->getHost() }}"; 
-                                const int serverPort = 8000;
-                                const char* serverPath = "/api/sensor-data";
-                                const char* apiKey = "{{ $device->api_key ?? 'API_KEY_ANDA' }}"; 
-                                // ===================================================================
+// ======================== KONFIGURASI LOKAL ========================
+const char* ssid = "WIfi_Name";         
+const char* password = "Wifi_Password"; 
+const char* serverIP = "{{ request()->getHost() }}"; 
+const int serverPort = 8000;
+const char* serverPath = "/api/sensor-data";
+const char* apiKey = "{{ $device->api_key ?? 'API_KEY_ANDA' }}"; 
+// ===================================================================
 
-                                // Variabel untuk pengaturan jeda
-                                unsigned long lastSendTime = 0;
-                                const int SEND_INTERVAL = 5000; // Jeda 5 detik
+// Variabel untuk pengaturan jeda
+unsigned long lastSendTime = 0;
+const int SEND_INTERVAL = 5000; // Jeda 5 detik
 
-                                void setup() {
-                                Serial.begin(115200);
-                                
-                                pinMode(RELAY_PUMP, OUTPUT);
-                                pinMode(RELAY_FAN, OUTPUT);
-                                
-                                digitalWrite(RELAY_PUMP, HIGH); 
-                                digitalWrite(RELAY_FAN, HIGH);
+void setup() {
+Serial.begin(115200);
 
-                                dht.begin();
-                                connectToWiFi();
-                                }
+pinMode(RELAY_PUMP, OUTPUT);
+pinMode(RELAY_FAN, OUTPUT);
 
-                                void loop() {
-                                // 1. Cek Koneksi WiFi
-                                if (WiFi.status() != WL_CONNECTED) {
-                                    Serial.println("⚠️ WiFi Terputus! Reconnecting...");
-                                    connectToWiFi();
-                                }
+digitalWrite(RELAY_PUMP, HIGH); 
+digitalWrite(RELAY_FAN, HIGH);
 
-                                float temperature = dht.readTemperature();
-                                float humidity = dht.readHumidity();
-                                int soilRaw = analogRead(SOIL_PIN);
+dht.begin();
+connectToWiFi();
+}
 
-                                // 2. Logika Otomatisasi (Tanpa Jeda - Berjalan Terus Demi Keamanan Tanaman)
-                                if (!isnan(temperature) && !isnan(humidity)) {
-                                    if (soilRaw > SOIL_DRY_THRESHOLD) {
-                                    digitalWrite(RELAY_PUMP, LOW);
-                                    } 
-                                    else if (soilRaw < SOIL_WET_THRESHOLD) {
-                                    digitalWrite(RELAY_PUMP, HIGH);
-                                    }
+void loop() {
+// 1. Cek Koneksi WiFi
+if (WiFi.status() != WL_CONNECTED) {
+    Serial.println("⚠️ WiFi Terputus! Reconnecting...");
+    connectToWiFi();
+}
 
-                                    if (temperature > TEMP_HOT_THRESHOLD) {
-                                    digitalWrite(RELAY_FAN, LOW);
-                                    } else {
-                                    digitalWrite(RELAY_FAN, HIGH);
-                                    }
-                                }
+float temperature = dht.readTemperature();
+float humidity = dht.readHumidity();
+int soilRaw = analogRead(SOIL_PIN);
 
-                                // 3. Jeda Pengiriman Data & Peringatan ke Web (Tiap 5 Detik)
-                                if (millis() - lastSendTime >= SEND_INTERVAL) {
-                                    lastSendTime = millis(); // Reset timer
+// 2. Logika Otomatisasi (Tanpa Jeda - Berjalan Terus Demi Keamanan Tanaman)
+if (!isnan(temperature) && !isnan(humidity)) {
+    if (soilRaw > SOIL_DRY_THRESHOLD) {
+    digitalWrite(RELAY_PUMP, LOW);
+    } 
+    else if (soilRaw < SOIL_WET_THRESHOLD) {
+    digitalWrite(RELAY_PUMP, HIGH);
+    }
 
-                                    if (isnan(temperature) || isnan(humidity)) {
-                                    Serial.println("❌ Notifikasi: Gagal baca sensor DHT! Data tidak dikirim.");
-                                    } else {
-                                    sendDataToServer(temperature, humidity, soilRaw);
-                                    }
-                                }
-                                }
+    if (temperature > TEMP_HOT_THRESHOLD) {
+    digitalWrite(RELAY_FAN, LOW);
+    } else {
+    digitalWrite(RELAY_FAN, HIGH);
+    }
+}
 
-                                void connectToWiFi() {
-                                WiFi.begin(ssid, password);
-                                Serial.print("Menghubungkan ke WiFi");
-                                while (WiFi.status() != WL_CONNECTED) {
-                                    delay(500);
-                                    Serial.print(".");
-                                }
-                                Serial.println("\n✅ WiFi Tersambung!");
-                                }
+// 3. Jeda Pengiriman Data & Peringatan ke Web (Tiap 5 Detik)
+if (millis() - lastSendTime >= SEND_INTERVAL) {
+    lastSendTime = millis(); // Reset timer
 
-                                void sendDataToServer(float temp, float hum, int soil) {
-                                WiFiClient client;
-                                HTTPClient http;
-                                
-                                // Membangun URL
-                                String url = "http://" + String(serverIP) + ":" + String(serverPort) + serverPath;
+    if (isnan(temperature) || isnan(humidity)) {
+    Serial.println("❌ Notifikasi: Gagal baca sensor DHT! Data tidak dikirim.");
+    } else {
+    sendDataToServer(temperature, humidity, soilRaw);
+    }
+}
+}
 
-                                Serial.println("\n--- Laporan Status Web ---");
-                                
-                                if (http.begin(client, url)) {
-                                    http.addHeader("Content-Type", "application/json");
-                                    http.addHeader("Authorization", "Bearer " + String(apiKey));
+void connectToWiFi() {
+WiFi.begin(ssid, password);
+Serial.print("Menghubungkan ke WiFi");
+while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+}
+Serial.println("\n✅ WiFi Tersambung!");
+}
 
-                                    StaticJsonDocument<200> doc;
-                                    doc["temperature"] = temp;
-                                    doc["humidity"] = hum;
-                                    doc["soil"] = soil;
+void sendDataToServer(float temp, float hum, int soil) {
+WiFiClient client;
+HTTPClient http;
 
-                                    String payload;
-                                    serializeJson(doc, payload);
-                                    
-                                    int httpCode = http.POST(payload);
-                                    
-                                    if (httpCode > 0) {
-                                    if (httpCode == HTTP_CODE_OK || httpCode == 201) {
-                                        Serial.printf("✅ Terhubung! Data Berhasil Terkirim (Code: %d)\n", httpCode);
-                                    } else {
-                                        Serial.printf("⚠️ Terhubung, tapi Server Menolak (Code: %d)\n", httpCode);
-                                    }
-                                    } else {
-                                    // Peringatan jika alat gagal menjangkau web
-                                    Serial.printf("❌ Gagal Terhubung ke Web! Error: %s\n", http.errorToString(httpCode).c_str());
-                                    }
-                                    http.end();
-                                } else {
-                                    Serial.println("❌ Kesalahan Fatal: Tidak dapat memulai koneksi HTTP");
-                                }
-                                Serial.println("--------------------------");
-                                }
+// Membangun URL
+String url = "http://" + String(serverIP) + ":" + String(serverPort) + serverPath;
+
+Serial.println("\n--- Laporan Status Web ---");
+
+if (http.begin(client, url)) {
+    http.addHeader("Content-Type", "application/json");
+    http.addHeader("Authorization", "Bearer " + String(apiKey));
+
+    StaticJsonDocument<200> doc;
+    doc["temperature"] = temp;
+    doc["humidity"] = hum;
+    doc["soil"] = soil;
+
+    String payload;
+    serializeJson(doc, payload);
+    
+    int httpCode = http.POST(payload);
+    
+    if (httpCode > 0) {
+    if (httpCode == HTTP_CODE_OK || httpCode == 201) {
+        Serial.printf("✅ Terhubung! Data Berhasil Terkirim (Code: %d)\n", httpCode);
+    } else {
+        Serial.printf("⚠️ Terhubung, tapi Server Menolak (Code: %d)\n", httpCode);
+    }
+    } else {
+    // Peringatan jika alat gagal menjangkau web
+    Serial.printf("❌ Gagal Terhubung ke Web! Error: %s\n", http.errorToString(httpCode).c_str());
+    }
+    http.end();
+} else {
+    Serial.println("❌ Kesalahan Fatal: Tidak dapat memulai koneksi HTTP");
+}
+Serial.println("--------------------------");
+}
                             </code>
                         </pre>
                     </div>
