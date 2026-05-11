@@ -98,13 +98,47 @@
                 <div class="animate-team-marquee">
                     @php
                         $team = [
-                            ['name' => 'Andi Pratama', 'role' => 'Founder & CEO', 'bg' => 'bg-emerald-100'],
-                            ['name' => 'Sari Dewi', 'role' => 'Lead Engineer', 'bg' => 'bg-[#d4e9d4]'],
-                            ['name' => 'Budi Santoso', 'role' => 'UI/UX Designer', 'bg' => 'bg-lime-100'],
-                            ['name' => 'Rina Kusuma', 'role' => 'IoT Specialist', 'bg' => 'bg-emerald-50'],
-                            ['name' => 'Deni Wahyu', 'role' => 'Data Analyst', 'bg' => 'bg-green-100'],
-                            ['name' => 'Maya Putri', 'role' => 'Agri Expert', 'bg' => 'bg-teal-100'],
-                        ];
+                                        [
+                                            'name' => 'Bintang Putra Sugiarta',
+                                            'role' => 'Ketua Tim & Konseptor',
+                                            'bg'   => 'bg-emerald-100',
+                                        ],
+                                        [
+                                            'name' => 'Bintang Adi Alvaro',
+                                            'role' => 'Website & Maket Developer',
+                                            'bg'   => 'bg-[#d4e9d4]',
+                                        ],
+                                        [
+                                            'name' => 'Hardiansyah Aditya',
+                                            'role' => 'UI/UX Designer & Maket Specialist',
+                                            'bg'   => 'bg-lime-100',
+                                        ],
+                                        [
+                                            'name' => 'Ajeng Nielza Itsna Mufida',
+                                            'role' => 'WordPress & Maket Specialist',
+                                            'bg'   => 'bg-emerald-50',
+                                        ],
+                                        [
+                                            'name' => 'Akmal Wildan Pratama',
+                                            'role' => 'Data Analyst & Maket Engineer',
+                                            'bg'   => 'bg-green-100',
+                                        ],
+                                        [
+                                            'name' => 'Arweyn Abigail',
+                                            'role' => 'Technical Report & Maket Coordinator',
+                                            'bg'   => 'bg-teal-100',
+                                        ],
+                                        [
+                                            'name' => 'Bilqys Thalita Efendi',
+                                            'role' => 'WordPress & Maket Specialist',
+                                            'bg'   => 'bg-emerald-100',
+                                        ],
+                                        [
+                                            'name' => 'Ayda Sazmita',
+                                            'role' => 'Marketing & Maket Designer',
+                                            'bg'   => 'bg-[#d4e9d4]',
+                                        ],
+                                    ];
                     @endphp
         
                     @for ($i = 0; $i < 2; $i++)
