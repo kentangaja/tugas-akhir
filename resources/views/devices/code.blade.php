@@ -34,10 +34,10 @@
                     <div class="overflow-x-auto custom-scrollbar">
                         <pre id="codeBlock" class="text-sm md:text-base font-mono leading-relaxed text-zinc-300">
                             <code>
-#include ESP8266WiFi.h
-#include ESP8266HTTPClient.h
-#include ArduinoJson.h
-#include DHT.h
+#include &lt;ESP8266WiFi.h&gt;
+#include &lt;ESP8266HTTPClient.h&gt;
+#include &lt;ArduinoJson.h&gt;
+#include &lt;DHT.h&gt;
 
 #define DHTPIN D4     
 #define DHTTYPE DHT11 
@@ -58,7 +58,6 @@ DHT dht(DHTPIN, DHTTYPE);
 const char* ssid = "WIfi_Name";         
 const char* password = "Wifi_Password"; 
 const char* serverIP = "{{ request()->getHost() }}"; 
-const int serverPort = 8000;
 const char* serverPath = "/api/sensor-data";
 const char* apiKey = "{{ $device->api_key ?? 'API_KEY_ANDA' }}"; 
 // ===================================================================
@@ -130,11 +129,12 @@ Serial.println("\n✅ WiFi Tersambung!");
 }
 
 void sendDataToServer(float temp, float hum, int soil) {
-WiFiClient client;
+WiFiClientSecure client;
+client.setInsecure();
 HTTPClient http;
 
 // Membangun URL
-String url = "http://" + String(serverIP) + ":" + String(serverPort) + serverPath;
+String url = "https://" + String(serverIP) + serverPath;
 
 Serial.println("\n--- Laporan Status Web ---");
 
