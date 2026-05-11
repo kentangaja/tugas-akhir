@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Contact;
+use App\Mail\ContactMail;
 
 class ContactController extends Controller
 {
@@ -18,6 +20,8 @@ class ContactController extends Controller
         ]);
 
         Contact::create($validated);
+
+        Mail::to('revicee555@gmail.com')->send(new ContactMail($validated));
 
         return redirect()->route('contact')
             ->with('success', 'Pesan Anda telah berhasil dikirim. Kami akan menghubungi Anda segera!');
