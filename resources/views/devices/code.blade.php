@@ -33,8 +33,7 @@
                 <div class="bg-zinc-950 rounded-b-[2rem] p-6 md:p-8 overflow-hidden shadow-2xl border-x border-b border-zinc-900">
                     <div class="overflow-x-auto custom-scrollbar">
                         <pre id="codeBlock" class="text-sm md:text-base font-mono leading-relaxed text-zinc-300">
-                            <code>
-#include <ESP8266WiFi.h>
+                            <code>#include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
 #include <DHT.h>
