@@ -7,7 +7,7 @@
                     <h1 class="text-4xl md:text-5xl font-medium tracking-tight">
                         Connected <span class="italic font-normal text-emerald-700">Greenhouses</span>
                     </h1>
-                    <p class="text-gray-500 mt-2">Manage and monitor your automated urban spaces.</p>
+                    <p class="text-gray-500 mt-2">Kelola dan pantau ruang greenhouse Anda..</p>
                 </div>
                 
                 @auth
@@ -47,7 +47,7 @@
                                 <div class="flex flex-wrap items-center gap-3">
                                     <a href="{{ route('devices.code', $device->id) }}"
                                     class="bg-white border border-[#d4e9d4] text-black px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all shadow-sm hover:bg-gray-50">
-                                        View Code
+                                        Code
                                         <svg xmlns="http://www.w3.org/2000/svg" 
                                             fill="none" 
                                             viewBox="0 0 24 24" 
@@ -60,7 +60,7 @@
                                     
                                     <a href="{{ route('devices.show', $device->id) }}"
                                     class="flex-1 flex items-center justify-center bg-[#063b2a] text-white py-2.5 px-4 rounded-2xl font-medium text-sm hover:bg-[#052a1d] transition-all">
-                                        View Dashboard 
+                                        Dashboard 
                                         <svg xmlns="http://www.w3.org/2000/svg" 
                                             fill="none" 
                                             viewBox="0 0 24 24" 

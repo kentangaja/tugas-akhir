@@ -3,8 +3,8 @@
         <div class="max-w-5xl mx-auto">
             
             <div class="text-center mb-16">
-                <span class="text-emerald-600 font-bold tracking-widest uppercase text-sm">Getting Started</span>
-                <h1 class="text-5xl font-black text-gray-900 mt-4 tracking-tight">How it Works</h1>
+                <span class="text-emerald-600 font-bold tracking-widest uppercase text-sm">Mari Kita Mulai</span>
+                <h1 class="text-5xl font-black text-gray-900 mt-4 tracking-tight">Tutorial</h1>
                 <p class="text-gray-500 mt-4 text-lg max-w-2xl mx-auto">Ikuti langkah-langkah di bawah ini untuk menghubungkan perangkat kamu ke ekosistem <span class="text-emerald-600 font-semibold">Verte-Maison</span>.</p>
             </div>
 

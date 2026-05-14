@@ -79,9 +79,17 @@
 
                     <div class="flex-1 grid grid-cols-2 gap-6">
                         <div class="bg-gray-100 rounded-[2.5rem] flex flex-col items-center justify-center p-6 text-center">
-                            <span class="text-[10px] font-bold text-emerald-400 uppercase mb-2 tracking-widest">Status</span>
-                            <span id="statusBadge" class="text-xl font-medium transition-colors">
-                                Loading...
+                            <span class="text-[10px] font-bold text-emerald-400 uppercase mb-2 tracking-widest">Indikator Suhu</span>
+                            <span id="tempIndicator" class="text-xl font-medium transition-colors">
+                                @if ($latest)
+                                    @if ($latest->getTemperatureStatus() === 'Panas')
+                                        <span class="text-red-500">🔥 Panas</span>
+                                    @else
+                                        <span class="text-green-500">✓ Normal</span>
+                                    @endif
+                                @else
+                                    <span class="text-gray-500">No Data</span>
+                                @endif
                             </span>
                         </div>
 
@@ -97,9 +105,53 @@
 
             <div class="border-t border-gray-200 pt-8 mt-8">
                 <div class="mb-6">
-                    <h4 class="text-lg font-semibold text-gray-800 mb-4">
-                        Sensor Data
-                    </h4>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                        <h4 class="text-lg font-semibold text-gray-800">
+                            Sensor Data
+                        </h4>
+                        <a href="{{ route('devices.export-pdf', $device->id) }}@if($startDate || $endDate || $minTemp || $maxTemp)?start_date={{$startDate}}&end_date={{$endDate}}&min_temp={{$minTemp}}&max_temp={{$maxTemp}}@endif"
+                           class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8m0 8l-4-2m4 2l4-2" />
+                            </svg>
+                            Export to PDF
+                        </a>
+                    </div>
+
+                    {{-- Filter Form --}}
+                    <div class="p-6 rounded-lg border border-emerald-500 mb-6">
+                        <h5 class="text-sm font-semibold text-gray-700 mb-4">Cari & Filter Data</h5>
+                        <form method="GET" class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-600 mb-2">Dari Tanggal</label>
+                                <input type="date" name="start_date" value="{{ $startDate }}"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-600 mb-2">Sampai Tanggal</label>
+                                <input type="date" name="end_date" value="{{ $endDate }}"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-600 mb-2">Min Suhu (°C)</label>
+                                <input type="number" name="min_temp" step="0.1" value="{{ $minTemp }}"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-600 mb-2">Max Suhu (°C)</label>
+                                <input type="number" name="max_temp" step="0.1" value="{{ $maxTemp }}"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm">
+                            </div>
+                            <div class="flex items-end gap-2">
+                                <button type="submit" class="w-full border border-emerald-500 hover:bg-emerald-600 text-emerald-500 hover:text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                                    Cari
+                                </button>
+                                <a href="{{ route('devices.show', $device->id) }}" class="w-full border border-gray-400 hover:bg-gray-600 text-black hover:text-white font-semibold py-2 px-4 rounded-lg transition-colors text-center">
+                                    Reset
+                                </a>
+                            </div>
+                        </form>
+                    </div>
                                 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                         <div class="p-4 rounded-2xl border border-emerald-500">
@@ -139,6 +191,9 @@
                                         Rata-rata Suhu
                                     </th>
                                     <th class="px-4 py-3 text-left font-semibold text-gray-700">
+                                        Status
+                                    </th>
+                                    <th class="px-4 py-3 text-left font-semibold text-gray-700">
                                         Rata-rata Kelembaban
                                     </th>
                                     <th class="px-4 py-3 text-left font-semibold text-gray-700">
@@ -150,7 +205,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($device->getWeeklyTemperatureByDay() as $data)
+                                @forelse ($weeklyData as $data)
+                                @php
+                                    $status = $data->avg_temperature > 30 ? 'Panas' : 'Normal';
+                                    $statusColor = $data->avg_temperature > 30 ? 'red' : 'green';
+                                @endphp
                                 <tr class="border-b border-gray-200 hover:bg-gray-50">
                                     <td class="px-4 py-3 font-medium text-gray-800">
                                         {{ \Carbon\Carbon::parse($data->date)->format('d M Y') }}
@@ -159,6 +218,17 @@
                                         <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-xs font-semibold">
                                             {{ number_format($data->avg_temperature ?? 0, 1) }}°C
                                         </span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        @if ($status === 'Panas')
+                                            <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                                🔥 Panas
+                                            </span>
+                                        @else
+                                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                                ✓ Normal
+                                            </span>
+                                        @endif
                                     </td>
                                     <td class="px-4 py-3">
                                         <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold">
@@ -176,8 +246,8 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="5" class="px-4 py-6 text-center text-gray-500 italic">
-                                        Tidak ada data sensor tersedia untuk minggu ini
+                                    <td colspan="6" class="px-4 py-6 text-center text-gray-500 italic">
+                                        Tidak ada data sensor tersedia
                                     </td>
                                 </tr>
                                 @endforelse
@@ -203,6 +273,9 @@
                                         Rata-rata Suhu
                                     </th>
                                     <th class="px-4 py-3 text-left font-semibold text-gray-700">
+                                        Status
+                                    </th>
+                                    <th class="px-4 py-3 text-left font-semibold text-gray-700">
                                         Rata-rata Kelembaban
                                     </th>
                                     <th class="px-4 py-3 text-left font-semibold text-gray-700">
@@ -215,6 +288,9 @@
                             </thead>
                             <tbody>
                             @foreach ($device->getDailyTemperatureByHour() as $data)
+                                @php
+                                    $status = $data->avg_temperature > 30 ? 'Panas' : 'Normal';
+                                @endphp
                                 <tr class="border-b border-gray-200 hover:bg-gray-50">
                                     <td class="px-4 py-3 font-medium text-gray-800">
                                         {{ str_pad($data->hour, 2, '0', STR_PAD_LEFT) }}:00
@@ -223,6 +299,17 @@
                                         <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-xs font-semibold">
                                             {{ number_format($data->avg_temperature ?? 0, 1) }}°C
                                         </span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        @if ($status === 'Panas')
+                                            <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                                🔥 Panas
+                                            </span>
+                                        @else
+                                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                                ✓ Normal
+                                            </span>
+                                        @endif
                                     </td>
                                     <td class="px-4 py-3">
                                         <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold">
@@ -300,19 +387,18 @@
                 document.getElementById('humidityDisplay').textContent = (latest.humidity ?? '--') + '%';
                 document.getElementById('soilDisplay').textContent = latest.soil ?? '--';
                 
+                // Update Temperature Indicator
+                const tempIndicator = document.getElementById('tempIndicator');
+                if (latest.temperature_status === 'Panas') {
+                    tempIndicator.innerHTML = '<span class="text-red-500">🔥 Panas</span>';
+                } else {
+                    tempIndicator.innerHTML = '<span class="text-green-500">✓ Normal</span>';
+                }
+
                 // Update Status Online/Offline (Cek selisih waktu 5 menit)
-                const statusBadge = document.getElementById('statusBadge');
                 const lastSyncDate = new Date(latest.created_at);
                 const now = new Date();
                 const diffMinutes = (now - lastSyncDate) / 1000 / 60;
-
-                if (diffMinutes < 5) {
-                    statusBadge.textContent = "System Active";
-                    statusBadge.className = "text-xl font-medium text-emerald-500";
-                } else {
-                    statusBadge.textContent = "Offline";
-                    statusBadge.className = "text-xl font-medium text-red-400";
-                }
 
                 // Update "Last Sync" text
                 const diffSecs = Math.floor((now - lastSyncDate) / 1000);

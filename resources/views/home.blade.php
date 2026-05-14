@@ -33,8 +33,8 @@
             
             <div class="mb-6 flex justify-end">
                 <h1 class="text-4xl md:text-5xl font-medium text-gray-900 tracking-tight leading-tight">
-                    Reimagining Urban Spaces <br>
-                    <span class="bg-[#d4e9d4] px-4 py-1 rounded-full italic font-normal text-3xl md:text-4xl">Greening</span> the World
+                    Menata Ruang <br>
+                    <span class="bg-[#d4e9d4] px-4 py-1 rounded-full italic font-normal text-3xl md:text-4xl">Menanam</span> Masa Depan
                 </h1>
             </div>
 
@@ -46,15 +46,15 @@
                             <div class="w-8 h-8 rounded-full bg-gray-500 border-2 border-[#d4e9d4]"></div>
                             <div class="w-8 h-8 rounded-full bg-gray-500 border-2 border-[#d4e9d4]"></div>
                         </div>
-                        <p class="text-lg font-bold text-emerald-900">Our Team 
+                        <p class="text-lg font-bold text-emerald-900">Tim Kami 
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block text-emerald-700 ms-1">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
                             </svg>
                         </p>
                     </a>
                     <div class="flex gap-3 pt-12">
-                        <button class="px-6 py-2 border border-gray-300 rounded-full text-xs font-medium bg-white hover:bg-gray-100 transition-colors duration-200">Explore</button>
-                        <button class="px-6 py-2 bg-[#063b2a] text-white rounded-full text-xs font-medium hover:bg-[#052a1d] transition-colors duration-200">Work with Us</button>
+                        <button class="px-6 py-2 border border-gray-300 rounded-full text-xs font-medium bg-white hover:bg-gray-100 transition-colors duration-200">Jelajahi</button>
+                        <button class="px-6 py-2 bg-[#063b2a] text-white rounded-full text-xs font-medium hover:bg-[#052a1d] transition-colors duration-200">Bekerja dengan Kami</button>
                     </div>
                 </div>
 
@@ -67,7 +67,7 @@
 
                         <div class="absolute bottom-6 left-6 bg-white/10 backdrop-blur-md p-6 rounded-[2.5rem] max-w-[280px] shadow-sm">
                             <p class="text-xs md:text-sm text-white leading-relaxed font-medium">
-                                We believe that the future of cities lies in smart, eco-friendly solutions that address the pressing challenges of urbanization.
+                                Kami percaya bahwa masa depan kota terletak pada solusi cerdas dan ramah lingkungan yang mengatasi tantangan mendesak urbanisasi.
                             </p>
                         </div>
                     </div>

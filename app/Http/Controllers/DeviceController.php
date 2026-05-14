@@ -7,6 +7,8 @@ use Illuminate\Support\Str;
 use App\Models\Device;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 
 class DeviceController extends Controller
 {
@@ -20,9 +22,21 @@ class DeviceController extends Controller
         return view('devices.index', compact('devices'));
     }
 
-    public function show(Device $device)
+    public function show(Device $device, Request $request)
     {
         $latest = $device->sensorData()->latest()->first();
+
+        // Get filtered data if filters are applied
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $minTemp = $request->input('min_temp');
+        $maxTemp = $request->input('max_temp');
+
+        if ($startDate || $endDate || $minTemp || $maxTemp) {
+            $weeklyData = $device->getFilteredTemperatureData($startDate, $endDate, $minTemp, $maxTemp);
+        } else {
+            $weeklyData = $device->getWeeklyTemperatureByDay();
+        }
 
         $history = $device->sensorData()
                         ->latest()
@@ -37,7 +51,7 @@ class DeviceController extends Controller
         $tempData = $history->pluck('temperature');
         $humData = $history->pluck('humidity');
 
-        return view('devices.show', compact('device', 'latest', 'labels', 'tempData', 'humData'));
+        return view('devices.show', compact('device', 'latest', 'labels', 'tempData', 'humData', 'weeklyData', 'startDate', 'endDate', 'minTemp', 'maxTemp'));
     }
 
     public function code(Device $device)
@@ -140,6 +154,39 @@ class DeviceController extends Controller
         return response()->json([
             'success' => true,
             'data' => $latest,
+            'temperature_status' => $latest->getTemperatureStatus(),
+            'status_color' => $latest->getTemperatureStatusColor(),
         ]);
+    }
+
+    public function exportPDF(Device $device, Request $request)
+    {
+        // Authorize: pastikan user punya device ini
+        if ($device->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $minTemp = $request->input('min_temp');
+        $maxTemp = $request->input('max_temp');
+
+        // Get filtered data
+        if ($startDate || $endDate || $minTemp || $maxTemp) {
+            $sensorData = $device->getFilteredTemperatureData($startDate, $endDate, $minTemp, $maxTemp);
+        } else {
+            $sensorData = $device->getWeeklyTemperatureByDay();
+        }
+
+        $pdf = Pdf::loadView('devices.export-pdf', [
+            'device' => $device,
+            'sensorData' => $sensorData,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'minTemp' => $minTemp,
+            'maxTemp' => $maxTemp,
+        ]);
+
+        return $pdf->download('sensor-data-' . $device->device_name . '-' . now()->format('Y-m-d') . '.pdf');
     }
 }
