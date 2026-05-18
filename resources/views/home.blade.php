@@ -129,7 +129,7 @@
                                             'bg'   => 'bg-teal-100',
                                         ],
                                         [
-                                            'name' => 'Bilqys Thalita Efendi',
+                                            'name' => 'Bilqys Thalita Efendy',
                                             'role' => 'WordPress & Maket Specialist',
                                             'bg'   => 'bg-emerald-100',
                                         ],

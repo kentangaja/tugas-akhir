@@ -138,7 +138,7 @@
                                     'instagram' => '#',
                                 ],
                                 [
-                                    'name'      => 'Bilqys Thalita Efendi',
+                                    'name'      => 'Bilqys Thalita Efendy',
                                     'role'      => 'WordPress Specialist & Konstruksi Maket',
                                     'desc'      => 'Optimasi konten landing page proyek dan berkolaborasi dalam integrasi elemen visual pada maket.',
                                     'bg'        => 'bg-emerald-100',
