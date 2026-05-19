@@ -13,12 +13,14 @@ class Device extends Model
         'device_name',
         'api_key',
         'fan_threshold',
-        'soil_threshold'
+        'soil_dry_threshold',
+        'soil_wet_threshold'
     ];
 
     protected $casts = [
         'fan_threshold' => 'float',
-        'soil_threshold' => 'integer',
+        'soil_dry_threshold' => 'integer',
+        'soil_wet_threshold' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

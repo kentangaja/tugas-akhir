@@ -68,8 +68,9 @@ class DeviceController extends Controller
     {
         $request->validate([
             'device_name' => 'required|string|max:255',
-            'fan_threshold' => 'nullable|numeric',
-            'soil_threshold' => 'nullable|integer',
+            'fan_threshold' => 'nullable|numeric|min:0|max:50',
+            'soil_dry_threshold' => 'nullable|integer|min:0|max:100',
+            'soil_wet_threshold' => 'nullable|integer|min:0|max:100',
         ]);
 
         /** @var User $user */
@@ -79,7 +80,8 @@ class DeviceController extends Controller
             'device_name' => $request->device_name,
             'api_key' => Str::uuid(),
             'fan_threshold' => $request->fan_threshold,
-            'soil_threshold' => $request->soil_threshold,
+            'soil_dry_threshold' => $request->soil_dry_threshold ?? 70,
+            'soil_wet_threshold' => $request->soil_wet_threshold ?? 40,
         ]);
 
         return redirect()->route('devices.index')
@@ -105,14 +107,16 @@ class DeviceController extends Controller
 
         $request->validate([
             'device_name' => 'required|string|max:255',
-            'fan_threshold' => 'nullable|numeric',
-            'soil_threshold' => 'nullable|integer',
+            'fan_threshold' => 'nullable|numeric|min:0|max:50',
+            'soil_dry_threshold' => 'nullable|integer|min:0|max:100',
+            'soil_wet_threshold' => 'nullable|integer|min:0|max:100',
         ]);
 
         $device->update([
             'device_name' => $request->device_name,
             'fan_threshold' => $request->fan_threshold,
-            'soil_threshold' => $request->soil_threshold,
+            'soil_dry_threshold' => $request->soil_dry_threshold ?? $device->soil_dry_threshold,
+            'soil_wet_threshold' => $request->soil_wet_threshold ?? $device->soil_wet_threshold,
         ]);
 
         return redirect()->route('devices.index')

@@ -48,9 +48,13 @@
 #define RELAY_FAN  D2  
 
 // --- KONFIGURASI AMBANG BATAS (THRESHOLD) ---
-const int SOIL_DRY_THRESHOLD = 750;   
-const int SOIL_WET_THRESHOLD = 500;   
-const float TEMP_HOT_THRESHOLD = 32.0; 
+// Soil moisture thresholds: converted from percentage to ADC value (0-1023)
+// Formula: ADC = (100 - percentage) * 10.23
+// Dry Threshold: pump ON saat kelembapan TURUN di bawah nilai ini
+// Wet Threshold: pump OFF saat kelembapan NAIK di atas nilai ini
+const int SOIL_DRY_THRESHOLD = {{ (int)((100 - ($device->soil_dry_threshold ?? 70)) * 10.23) }};   // {{ $device->soil_dry_threshold ?? 70 }}% → ~{{ (int)((100 - ($device->soil_dry_threshold ?? 70)) * 10.23) }} ADC
+const int SOIL_WET_THRESHOLD = {{ (int)((100 - ($device->soil_wet_threshold ?? 40)) * 10.23) }};   // {{ $device->soil_wet_threshold ?? 40 }}% → ~{{ (int)((100 - ($device->soil_wet_threshold ?? 40)) * 10.23) }} ADC
+const float TEMP_HOT_THRESHOLD = {{ $device->fan_threshold ?? 32.0 }}; 
 
 DHT dht(DHTPIN, DHTTYPE);
 
