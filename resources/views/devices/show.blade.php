@@ -44,10 +44,9 @@
                             </div>
                             <div class="bg-white/40 p-6 rounded-[2rem]">
                                 <p class="text-xs text-gray-400 uppercase">Soil Moisture</p>
-                                <p class="text-2xl font-bold text-amber-500" id="soilDisplay">{{ $latest->soil ?? '--' }}%</p>
+                                <p class="text-2xl font-bold text-amber-500" id="soilDisplay">{{ $latest->soil ? round(($latest->soil / 1023) * 100) : '--' }}%</p>
                             </div>
                         </div>
-
                         <div class="absolute -bottom-10 -right-10 w-64 h-64 bg-emerald-100 rounded-full blur-3xl opacity-50"></div>
                     </div>
                 </div>
@@ -221,28 +220,28 @@
                                         {{ \Carbon\Carbon::parse($data->date)->format('d M Y') }}
                                     </td>
                                     <td class="px-4 py-3">
-                                        <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                        <span class="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-xs font-semibold">
                                             {{ number_format($data->avg_temperature ?? 0, 1) }}°C
                                         </span>
                                     </td>
                                     <td class="px-4 py-3">
                                         @if ($status === 'Panas')
-                                            <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                            <span class="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-xs font-semibold">
                                                 Panas
                                             </span>
                                         @else
-                                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                            <span class="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-xs font-semibold">
                                                 Normal
                                             </span>
                                         @endif
                                     </td>
                                     <td class="px-4 py-3">
-                                        <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                        <span class="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-xs font-semibold">
                                             {{ number_format($data->avg_humidity ?? 0, 1) }}%
                                         </span>
                                     </td>
                                     <td class="px-4 py-3">
-                                        <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
+                                        <span class="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-xs font-semibold">
                                             {{ number_format($data->avg_soil ?? 0, 1) }}%
                                         </span>
                                     </td>
@@ -393,13 +392,14 @@
                 // Update Display Angka
                 document.getElementById('tempDisplay').innerHTML = `${latest.temperature ?? '--'}<span class="text-4xl">°C</span>`;
                 document.getElementById('humidityDisplay').textContent = (latest.humidity ?? '--') + '%';
-                document.getElementById('soilDisplay').textContent = (latest.soil ?? '--') + '%';
+                const soilPercent = latest.soil ? Math.round((latest.soil / 1023) * 100) : '--';
+                document.getElementById('soilDisplay').textContent = soilPercent + '%';
                 
                 // Update Temperature Indicator - Dynamic berdasarkan threshold
                 const tempIndicator = document.getElementById('tempIndicator');
                 const temperature = parseFloat(latest.temperature);
                 if (temperature > fanThreshold) {
-                    tempIndicator.innerHTML = '<span class="text-red-500">🔥 Panas</span>';
+                    tempIndicator.innerHTML = '<span class="text-red-500">Panas</span>';
                 } else {
                     tempIndicator.innerHTML = '<span class="text-green-500">✓ Normal</span>';
                 }
