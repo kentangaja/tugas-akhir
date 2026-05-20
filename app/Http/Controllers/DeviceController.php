@@ -155,11 +155,19 @@ class DeviceController extends Controller
             ], 404);
         }
 
+        // Determine online/offline status (consider offline if no data for 5 minutes)
+        $lastSyncDate = $latest->created_at;
+        $now = now();
+        $diffMinutes = $lastSyncDate->diffInMinutes($now);
+        $isOnline = $diffMinutes <= 5;
+
         return response()->json([
             'success' => true,
             'data' => $latest,
             'temperature_status' => $latest->getTemperatureStatus(),
             'status_color' => $latest->getTemperatureStatusColor(),
+            'is_online' => $isOnline,
+            'fan_threshold' => $device->fan_threshold ?? 30,
         ]);
     }
 

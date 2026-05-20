@@ -24,23 +24,24 @@ class SensorData extends Model
     }
 
     /**
-     * Get temperature status indicator (Panas/Normal)
-     * Threshold: > 30°C = Panas, <= 30°C = Normal
+     * Get temperature status indicator (Panas/Normal) based on device threshold
      */
     public function getTemperatureStatus()
     {
-        if ($this->temperature > 30) {
+        $threshold = $this->device->fan_threshold ?? 30;
+        if ($this->temperature > $threshold) {
             return 'Panas';
         }
         return 'Normal';
     }
 
     /**
-     * Get temperature status badge color
+     * Get temperature status badge color based on device threshold
      */
     public function getTemperatureStatusColor()
     {
-        if ($this->temperature > 30) {
+        $threshold = $this->device->fan_threshold ?? 30;
+        if ($this->temperature > $threshold) {
             return 'red';
         }
         return 'green';

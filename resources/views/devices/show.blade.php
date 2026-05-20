@@ -19,9 +19,14 @@
                     <div class="bg-gray-100 h-full rounded-[3.5rem] p-10 flex flex-col justify-between shadow-inner relative overflow-hidden">
                         <div class="flex justify-between items-start relative z-10">
                             <span class="px-4 py-1.5 bg-white/50 backdrop-blur-md rounded-full text-xs font-bold uppercase tracking-wider text-gray-500">Real-time Climate</span>
-                            <div class="flex items-center gap-2">
-                                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse" id="liveIndicator"></div>
-                                <span class="text-xs font-medium text-gray-400">LIVE</span>
+                            <div class="flex items-center gap-3">
+                                <div class="text-right">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <div class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse" id="liveIndicator"></div>
+                                        <span class="text-xs font-medium text-gray-400" id="statusText">LIVE</span>
+                                    </div>
+                                    <span class="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full" id="onlineStatus">Online</span>
+                                </div>
                             </div>
                         </div>
 
@@ -39,7 +44,7 @@
                             </div>
                             <div class="bg-white/40 p-6 rounded-[2rem]">
                                 <p class="text-xs text-gray-400 uppercase">Soil Moisture</p>
-                                <p class="text-2xl font-bold text-amber-500" id="soilDisplay">{{ $latest->soil ?? '--' }}</p>
+                                <p class="text-2xl font-bold text-amber-500" id="soilDisplay">{{ $latest->soil ?? '--' }}%</p>
                             </div>
                         </div>
 
@@ -83,9 +88,9 @@
                             <span id="tempIndicator" class="text-xl font-medium transition-colors">
                                 @if ($latest)
                                     @if ($latest->getTemperatureStatus() === 'Panas')
-                                        <span class="text-red-500">🔥 Panas</span>
+                                        <span class="text-red-500">Panas</span>
                                     @else
-                                        <span class="text-green-500">✓ Normal</span>
+                                        <span class="text-green-500">Normal</span>
                                     @endif
                                 @else
                                     <span class="text-gray-500">No Data</span>
@@ -172,10 +177,10 @@
                         </div>
                         <div class="p-4 rounded-2xl border border-emerald-500">
                             <p class="text-sm text-emerald-500 font-medium mb-1">
-                                Total Data
+                                Threshold Panas
                             </p>
                             <p class="text-2xl font-bold text-emerald-500">
-                                {{ $device->sensorData()->count() }}
+                                {{ $device->fan_threshold ?? 30 }}°C
                             </p>
                         </div>
                     </div>
@@ -207,8 +212,9 @@
                             <tbody>
                                 @forelse ($weeklyData as $data)
                                 @php
-                                    $status = $data->avg_temperature > 30 ? 'Panas' : 'Normal';
-                                    $statusColor = $data->avg_temperature > 30 ? 'red' : 'green';
+                                    $threshold = $device->fan_threshold ?? 30;
+                                    $status = $data->avg_temperature > $threshold ? 'Panas' : 'Normal';
+                                    $statusColor = $data->avg_temperature > $threshold ? 'red' : 'green';
                                 @endphp
                                 <tr class="border-b border-gray-200 hover:bg-gray-50">
                                     <td class="px-4 py-3 font-medium text-gray-800">
@@ -222,11 +228,11 @@
                                     <td class="px-4 py-3">
                                         @if ($status === 'Panas')
                                             <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
-                                                🔥 Panas
+                                                Panas
                                             </span>
                                         @else
                                             <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
-                                                ✓ Normal
+                                                Normal
                                             </span>
                                         @endif
                                     </td>
@@ -237,7 +243,7 @@
                                     </td>
                                     <td class="px-4 py-3">
                                         <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
-                                            {{ number_format($data->avg_soil ?? 0, 1) }}
+                                            {{ number_format($data->avg_soil ?? 0, 1) }}%
                                         </span>
                                     </td>
                                     <td class="px-4 py-3 text-gray-600">
@@ -289,7 +295,8 @@
                             <tbody>
                             @foreach ($device->getDailyTemperatureByHour() as $data)
                                 @php
-                                    $status = $data->avg_temperature > 30 ? 'Panas' : 'Normal';
+                                    $threshold = $device->fan_threshold ?? 30;
+                                    $status = $data->avg_temperature > $threshold ? 'Panas' : 'Normal';
                                 @endphp
                                 <tr class="border-b border-gray-200 hover:bg-gray-50">
                                     <td class="px-4 py-3 font-medium text-gray-800">
@@ -303,11 +310,11 @@
                                     <td class="px-4 py-3">
                                         @if ($status === 'Panas')
                                             <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-xs font-semibold">
-                                                🔥 Panas
+                                                Panas
                                             </span>
                                         @else
                                             <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
-                                                ✓ Normal
+                                                Normal
                                             </span>
                                         @endif
                                     </td>
@@ -318,7 +325,7 @@
                                     </td>
                                     <td class="px-4 py-3">
                                         <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
-                                            {{ number_format($data->avg_soil ?? 0, 1) }}
+                                            {{ number_format($data->avg_soil ?? 0, 1) }}%
                                         </span>
                                     </td>
                                     <td class="px-4 py-3 text-gray-600">
@@ -381,33 +388,53 @@
         .then(data => {
             if (data.success && data.data) {
                 const latest = data.data;
+                const fanThreshold = data.fan_threshold || 30;
 
                 // Update Display Angka
                 document.getElementById('tempDisplay').innerHTML = `${latest.temperature ?? '--'}<span class="text-4xl">°C</span>`;
                 document.getElementById('humidityDisplay').textContent = (latest.humidity ?? '--') + '%';
-                document.getElementById('soilDisplay').textContent = latest.soil ?? '--';
+                document.getElementById('soilDisplay').textContent = (latest.soil ?? '--') + '%';
                 
-                // Update Temperature Indicator
+                // Update Temperature Indicator - Dynamic berdasarkan threshold
                 const tempIndicator = document.getElementById('tempIndicator');
-                if (latest.temperature_status === 'Panas') {
+                const temperature = parseFloat(latest.temperature);
+                if (temperature > fanThreshold) {
                     tempIndicator.innerHTML = '<span class="text-red-500">🔥 Panas</span>';
                 } else {
                     tempIndicator.innerHTML = '<span class="text-green-500">✓ Normal</span>';
                 }
 
-                // Update Status Online/Offline (Cek selisih waktu 5 menit)
-                const lastSyncDate = new Date(latest.created_at);
-                const now = new Date();
-                const diffMinutes = (now - lastSyncDate) / 1000 / 60;
+                // Update Online/Offline Status
+                const isOnline = data.is_online;
+                const onlineStatus = document.getElementById('onlineStatus');
+                const liveIndicator = document.getElementById('liveIndicator');
+                const statusText = document.getElementById('statusText');
+                
+                if (isOnline) {
+                    onlineStatus.textContent = 'Online';
+                    onlineStatus.className = 'text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full';
+                    liveIndicator.className = 'w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse';
+                    statusText.textContent = 'LIVE';
+                    statusText.className = 'text-xs font-medium text-gray-400';
+                } else {
+                    onlineStatus.textContent = 'Offline';
+                    onlineStatus.className = 'text-[10px] font-semibold text-red-600 bg-red-50 px-2.5 py-1 rounded-full';
+                    liveIndicator.className = 'w-2.5 h-2.5 bg-red-500 rounded-full';
+                    statusText.textContent = 'OFFLINE';
+                    statusText.className = 'text-xs font-medium text-red-500';
+                }
 
                 // Update "Last Sync" text
+                const lastSyncDate = new Date(latest.created_at);
+                const now = new Date();
                 const diffSecs = Math.floor((now - lastSyncDate) / 1000);
                 document.getElementById('updatedDisplay').textContent = diffSecs < 60 ? `${diffSecs}s ago` : `${Math.floor(diffSecs/60)}m ago`;
 
-                // Animasi Indikator
-                const indicator = document.getElementById('liveIndicator');
-                indicator.classList.replace('bg-green-500', 'bg-white');
-                setTimeout(() => indicator.classList.replace('bg-white', 'bg-green-500'), 500);
+                // Animasi Indikator hanya jika online
+                if (isOnline) {
+                    const indicator = document.getElementById('liveIndicator');
+                    indicator.classList.add('animate-pulse');
+                }
             }
         })
         .catch(err => console.error("Error fetching data:", err));

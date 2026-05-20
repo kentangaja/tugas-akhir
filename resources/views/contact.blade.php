@@ -266,14 +266,14 @@
             <div class="animate-marquee">
                 @for ($i = 0; $i < 4; $i++)
                 <div class="flex items-center gap-12 px-6">
-                    <span class="text-2xl font-light text-gray-800 uppercase tracking-tighter whitespace-nowrap">
+                    <span class="text-2xl font-light text-emerald-900 uppercase tracking-tighter whitespace-nowrap">
                         Green Infrastructure Design
                     </span>
-                    <div class="w-8 h-8 bg-gray-300 rounded-lg rotate-12 flex-shrink-0"></div>
-                    <span class="text-2xl font-light text-gray-800 uppercase tracking-tighter whitespace-nowrap">
+                    <div class="w-8 h-8 bg-emerald-900 rounded-lg rotate-12 flex-shrink-0"></div>
+                    <span class="text-2xl font-light text-emerald-900 uppercase tracking-tighter whitespace-nowrap">
                         environmental impact assessment
                     </span>
-                    <div class="w-8 h-8 bg-gray-400 rounded-full flex-shrink-0"></div>
+                    <div class="w-8 h-8 bg-emerald-900 rounded-full flex-shrink-0"></div>
                 </div>
                 @endfor
             </div>
