@@ -38,17 +38,34 @@ class SensorController extends Controller
             'soil' => 'required|integer',
         ]);
 
-        // Store sensor data
+        // Calculate fan and pump status based on thresholds
+        $fan = false;
+        if (!is_null($device->fan_threshold) && !is_null($validated['temperature'])) {
+            $fan = $validated['temperature'] > $device->fan_threshold;
+        }
+
+        $pump = false;
+        if (!is_null($device->soil_dry_threshold) && !is_null($validated['soil'])) {
+            // Convert soil to percentage (0-1023 to 0-100)
+            $soilPercentage = ($validated['soil'] / 1023) * 100;
+            $pump = $soilPercentage < $device->soil_dry_threshold;
+        }
+
+        // Store sensor data with fan and pump status
         $sensorData = $device->sensorData()->create([
             'temperature' => $validated['temperature'],
             'humidity' => $validated['humidity'],
             'soil' => $validated['soil'],
+            'fan_status' => $fan,
+            'pump_status' => $pump,
         ]);
 
         return response()->json([
             'success' => true,
             'message' => 'Sensor data received',
             'data' => $sensorData,
+            'fan' => $fan,
+            'pump' => $pump,
         ]);
     }
 

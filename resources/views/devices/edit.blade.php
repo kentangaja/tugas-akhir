@@ -85,7 +85,7 @@
                                                 id="soil_dry_threshold"
                                                 name="soil_dry_threshold"
                                                 value="{{ old('soil_dry_threshold', $device->soil_dry_threshold ?? 70) }}"
-                                                placeholder="contoh: 70"
+                                                placeholder="contoh: 40"
                                                 min="0"
                                                 max="100"
                                                 class="w-full px-4 py-3 rounded-lg border border-gray-200 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all @error('soil_dry_threshold') border-red-500 @enderror"
@@ -111,7 +111,7 @@
                                                 id="soil_wet_threshold"
                                                 name="soil_wet_threshold"
                                                 value="{{ old('soil_wet_threshold', $device->soil_wet_threshold ?? 40) }}"
-                                                placeholder="contoh: 40"
+                                                placeholder="contoh: 70"
                                                 min="0"
                                                 max="100"
                                                 class="w-full px-4 py-3 rounded-lg border border-gray-200 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all @error('soil_wet_threshold') border-red-500 @enderror"
@@ -176,11 +176,11 @@
                                 <code class="bg-white px-2 py-1 border border-gray-200 rounded text-gray-800">28-35°C</code>
                             </div>
                             <div class="flex justify-between">
-                                <span>Tingkat Kering:</span>
+                                <span>Tingkat Basah:</span>
                                 <code class="bg-white px-2 py-1 border border-gray-200 rounded text-gray-800">60-80%</code>
                             </div>
                             <div class="flex justify-between">
-                                <span>Tingkat Basah:</span>
+                                <span>Tingkat Kering:</span>
                                 <code class="bg-white px-2 py-1 border border-gray-200 rounded text-gray-800">30-50%</code>
                             </div>
                         </div>

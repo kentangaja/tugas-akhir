@@ -554,6 +554,22 @@
                     statusText.className = 'text-xs font-medium text-red-500';
                 }
 
+                // Update Fan Indicator
+                const fanIndicator = document.getElementById('fanIndicator');
+                if (latest.fan_status) {
+                    fanIndicator.innerHTML = '<span class="text-sky-500 font-bold">Aktif</span>';
+                } else {
+                    fanIndicator.innerHTML = '<span class="text-gray-600 font-bold">Mati</span>';
+                }
+
+                // Update Pump Indicator
+                const pumpIndicator = document.getElementById('pumpIndicator');
+                if (latest.pump_status) {
+                    pumpIndicator.innerHTML = '<span class="text-amber-500 font-bold">Aktif</span>';
+                } else {
+                    pumpIndicator.innerHTML = '<span class="text-gray-600 font-bold">Mati</span>';
+                }
+
                 // Update "Last Sync" text
                 const lastSyncDate = new Date(latest.created_at);
                 const now = new Date();

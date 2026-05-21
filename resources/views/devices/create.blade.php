@@ -84,8 +84,8 @@
                                                 type="number" 
                                                 id="soil_dry_threshold"
                                                 name="soil_dry_threshold"
-                                                placeholder="contoh: 70"
-                                                value="70"
+                                                placeholder="contoh: 40"
+                                                value="40"
                                                 min="0"
                                                 max="100"
                                                 class="w-full px-4 py-3 rounded-lg border border-gray-200 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all @error('soil_dry_threshold') border-red-500 @enderror"
@@ -110,8 +110,8 @@
                                                 type="number" 
                                                 id="soil_wet_threshold"
                                                 name="soil_wet_threshold"
-                                                placeholder="contoh: 40"
-                                                value="40"
+                                                placeholder="contoh: 70"
+                                                value="70"
                                                 min="0"
                                                 max="100"
                                                 class="w-full px-4 py-3 rounded-lg border border-gray-200 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all @error('soil_wet_threshold') border-red-500 @enderror"
@@ -161,11 +161,11 @@
                                 <code class="bg-gray-100 px-2 py-1 rounded">28-35°C</code>
                             </div>
                             <div class="flex justify-between">
-                                <span>Tingkat Kering:</span>
+                                <span>Tingkat Basah:</span>
                                 <code class="bg-gray-100 px-2 py-1 rounded">60-80%</code>
                             </div>
                             <div class="flex justify-between">
-                                <span>Tingkat Basah:</span>
+                                <span>Tingkat Kering:</span>
                                 <code class="bg-gray-100 px-2 py-1 rounded">30-50%</code>
                             </div>
                         </div>
