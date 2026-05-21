@@ -172,7 +172,7 @@
 
                     {{-- Foto --}}
                     <div class="relative h-48 overflow-hidden bg-white/40">
-                        <div class="card-photo absolute inset-0 flex items-center justify-center bg-cover bg-center" style="background-image: url('{{ asset($member['photo']) }}')">
+                        <div class="card-photo absolute inset-0 flex items-center justify-center bg-cover bg-center bg-no-repeat w-full h-full" style="background-image: url('{{ asset($member['photo']) }}')">
                             @if (!file_exists(public_path($member['photo'])))
                                 <div class="w-20 h-20 rounded-full bg-white/70 flex items-center justify-center shadow-sm">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-emerald-700">

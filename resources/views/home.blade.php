@@ -166,7 +166,7 @@
                         <div class="mx-3 w-52 flex-shrink-0">
                             <div class="{{ $member['bg'] }} rounded-[2rem] p-6 h-64 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow duration-300 relative overflow-hidden">
                                 {{-- Foto --}}
-                                <div class="absolute inset-0 opacity-30 bg-cover bg-center" style="background-image: url('{{ asset($member['photo']) }}')"></div>
+                                <div class="absolute inset-0 opacity-30 bg-cover bg-center bg-no-repeat w-full h-full" style="background-image: url('{{ asset($member['photo']) }}')"></div>
                                 <div class="relative z-10 w-14 h-14 rounded-full bg-white/70 flex items-center justify-center shadow-sm overflow-hidden">
                                     @if (file_exists(public_path($member['photo'])))
                                         <img src="{{ asset($member['photo']) }}" alt="{{ $member['name'] }}" class="w-full h-full object-cover">
