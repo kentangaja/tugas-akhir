@@ -15,3 +15,28 @@
 #nprogress .peg {
     box-shadow: 0 0 10px #ff2d20, 0 0 5px #ff2d20 !important;
 }
+
+/* Ensure all buttons are visible and clickable */
+button[type="submit"],
+button[type="button"] {
+    display: inline-flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* Ensure form containers are properly sized */
+form {
+    display: block;
+    width: 100%;
+}
+
+/* Ensure flex containers for buttons work properly */
+.flex {
+    display: flex !important;
+}
+
+/* Ensure button containers have proper overflow */
+div.flex {
+    overflow: visible !important;
+}

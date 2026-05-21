@@ -89,7 +89,7 @@
                                     {{-- Toggle Status Button --}}
                                     <form method="POST" action="{{ route('devices.toggle-status', $device->id) }}" class="inline">
                                         @csrf
-                                        <button type="submit" class="@if($device->is_active) bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 @else bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 @endif px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all shadow-sm">
+                                        <button type="submit" class="min-w-[110px] @if($device->is_active) bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 @else bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 @endif px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all shadow-sm hover:shadow-md cursor-pointer">
                                             @if($device->is_active) 
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline-block me-1">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
