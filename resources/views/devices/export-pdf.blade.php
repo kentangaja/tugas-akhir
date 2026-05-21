@@ -182,7 +182,7 @@
                     @endif
                 </td>
                 <td>{{ number_format($data->avg_humidity ?? 0, 1) }}%</td>
-                <td>{{ number_format($data->avg_soil ?? 0, 1) }}</td>
+                <td>{{ number_format(100 - (($data->avg_soil ?? 0) / 1023) * 100, 1) }}%</td>
                 <td>{{ $data->count }}</td>
             </tr>
             @empty

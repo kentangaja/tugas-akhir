@@ -46,9 +46,10 @@ class SensorController extends Controller
 
         $pump = false;
         if (!is_null($device->soil_dry_threshold) && !is_null($validated['soil'])) {
-            // Convert soil to percentage (0-1023 to 0-100)
-            $soilPercentage = ($validated['soil'] / 1023) * 100;
-            $pump = $soilPercentage < $device->soil_dry_threshold;
+            // Convert soil to moisture percentage (0-1023 to 0-100)
+            // High sensor value = dry = low moisture, Low sensor value = wet = high moisture
+            $moisturePercentage = 100 - ($validated['soil'] / 1023) * 100;
+            $pump = $moisturePercentage < $device->soil_dry_threshold;
         }
 
         // Store sensor data with fan and pump status

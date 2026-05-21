@@ -127,12 +127,19 @@ class Device extends Model
         }
 
         // Filter berdasarkan kondisi kelembaban tanah (kering/basah)
+        // Soil moisture % = 100 - (soil_raw / 1023) * 100
         if ($soilCondition === 'dry') {
             $threshold = $this->soil_dry_threshold ?? 70;
-            $query->where('soil', '<', $threshold);
+            // Kering = moisture % < dry_threshold
+            // moisture% < threshold => 100 - (soil/1023)*100 < threshold => soil > (1023 * (100-threshold) / 100)
+            $soilRawThreshold = (1023 * (100 - $threshold)) / 100;
+            $query->where('soil', '>', $soilRawThreshold);
         } elseif ($soilCondition === 'wet') {
             $threshold = $this->soil_wet_threshold ?? 40;
-            $query->where('soil', '>', $threshold);
+            // Basah = moisture % > wet_threshold
+            // moisture% > threshold => 100 - (soil/1023)*100 > threshold => soil < (1023 * (100-threshold) / 100)
+            $soilRawThreshold = (1023 * (100 - $threshold)) / 100;
+            $query->where('soil', '<', $soilRawThreshold);
         }
 
         return $query

@@ -44,7 +44,7 @@
                             </div>
                             <div class="bg-white/40 p-6 rounded-[2rem]">
                                 <p class="text-xs text-gray-400 uppercase">Soil Moisture</p>
-                                <p class="text-2xl font-bold text-amber-500" id="soilDisplay">{{ $latest->soil ? round(($latest->soil / 1023) * 100) : '--' }}%</p>
+                                <p class="text-2xl font-bold text-amber-500" id="soilDisplay">{{ $latest->soil ? round(100 - ($latest->soil / 1023) * 100) : '--' }}%</p>
                             </div>
                         </div>
                         <div class="absolute -bottom-10 -right-10 w-64 h-64 bg-emerald-100 rounded-full blur-3xl opacity-50"></div>
@@ -266,11 +266,11 @@
                                     </label>
                                     <label class="flex items-center gap-3 p-2.5 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors">
                                         <input type="radio" name="soil_condition" value="dry" class="w-4 h-4 text-emerald-500 border-gray-300 focus:ring-emerald-500 focus:ring-offset-0" @if(request('soil_condition') === 'dry') checked @endif>
-                                        <span class="text-sm text-gray-700">Kering (di bawah {{ $device->soil_dry_threshold ?? 70 }}%)</span>
+                                        <span class="text-sm text-gray-700">Kering (kelembaban < {{ $device->soil_dry_threshold ?? 70 }}%)</span>
                                     </label>
                                     <label class="flex items-center gap-3 p-2.5 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors">
                                         <input type="radio" name="soil_condition" value="wet" class="w-4 h-4 text-emerald-500 border-gray-300 focus:ring-emerald-500 focus:ring-offset-0" @if(request('soil_condition') === 'wet') checked @endif>
-                                        <span class="text-sm text-gray-700">Basah (di atas {{ $device->soil_wet_threshold ?? 40 }}%)</span>
+                                        <span class="text-sm text-gray-700">Basah (kelembaban > {{ $device->soil_wet_threshold ?? 40 }}%)</span>
                                     </label>
                                 </div>
                             </div>
@@ -372,7 +372,7 @@
                                     </td>
                                     <td class="px-4 py-3">
                                         <span class="bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-xs font-semibold">
-                                            {{ number_format($data->avg_soil ?? 0, 1) }}%
+                                            {{ number_format(100 - (($data->avg_soil ?? 0) / 1023) * 100, 1) }}%
                                         </span>
                                     </td>
                                     <td class="px-4 py-3 text-gray-600">
@@ -454,7 +454,7 @@
                                     </td>
                                     <td class="px-4 py-3">
                                         <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-xs font-semibold">
-                                            {{ number_format($data->avg_soil ?? 0, 1) }}%
+                                            {{ number_format(100 - (($data->avg_soil ?? 0) / 1023) * 100, 1) }}%
                                         </span>
                                     </td>
                                     <td class="px-4 py-3 text-gray-600">
@@ -522,7 +522,7 @@
                 // Update Display Angka
                 document.getElementById('tempDisplay').innerHTML = `${latest.temperature ?? '--'}<span class="text-4xl">°C</span>`;
                 document.getElementById('humidityDisplay').textContent = (latest.humidity ?? '--') + '%';
-                const soilPercent = latest.soil ? Math.round((latest.soil / 1023) * 100) : '--';
+                const soilPercent = latest.soil ? Math.round(100 - (latest.soil / 1023) * 100) : '--';
                 document.getElementById('soilDisplay').textContent = soilPercent + '%';
                 
                 // Update Temperature Indicator - Dynamic berdasarkan threshold
