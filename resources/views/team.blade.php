@@ -30,7 +30,6 @@
 
     <div class="relative min-h-[100dvh] overflow-y-auto overflow-x-hidden pb-24">
 
-        {{-- HERO --}}
         <main class="max-w-7xl mx-auto px-6 pt-8 pb-10">
             <div class="mb-6 flex justify-end">
                 <h1 class="text-4xl md:text-5xl font-medium text-gray-900 tracking-tight leading-tight">
@@ -76,7 +75,6 @@
                                 Bersama-sama kami membangun teknologi untuk masa depan pertanian Indonesia.
                             </p>
                         </div>
-                        {{-- Decorative circles --}}
                         <div class="absolute -right-10 -top-10 w-48 h-48 rounded-full bg-white/5"></div>
                         <div class="absolute -right-4 -bottom-12 w-36 h-36 rounded-full bg-[#d4e9d4]/10"></div>
                     </div>
@@ -84,7 +82,6 @@
             </div>
         </main>
 
-        {{-- GRID TEAM --}}
         <section class="max-w-7xl mx-auto px-6 pb-10">
             <div class="flex items-center justify-between mb-8">
                 <div>
@@ -167,16 +164,13 @@
                 @foreach ($members as $member)
                 <div class="team-card group relative rounded-[2rem] overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 {{ $member['bg'] }}">
 
-                    {{-- Bagian Kontainer Foto (Diperbaiki agar tidak terpotong/nge-zoom) --}}
                     <div class="relative h-56 bg-white/40 flex items-center justify-center overflow-hidden">
-                        
-                        <div class="absolute inset-0 bg-cover bg-center blur-md opacity-25 scale-110" style="background-image: url('{{ asset($member['photo']) }}')"></div>
+                        <div class="absolute inset-0 bg-cover bg-center blur-md opacity-25 scale-110 z-0" style="background-image: url('{{ asset($member['photo']) }}')"></div>
 
                         <img src="{{ asset($member['photo']) }}" 
                              class="card-photo relative z-10 h-full w-auto object-contain mx-auto transition-transform duration-400 group-hover:scale-105" 
                              alt="{{ $member['name'] }}">
 
-                        {{-- Fallback jika file foto tidak ditemukan --}}
                         @if (!file_exists(public_path($member['photo'])))
                             <div class="absolute inset-0 z-20 flex items-center justify-center bg-white/40">
                                 <div class="w-20 h-20 rounded-full bg-white/70 flex items-center justify-center shadow-sm">
@@ -187,9 +181,8 @@
                             </div>
                         @endif
 
-                        {{-- Overlay social media saat hover --}}
-                        <div class="card-overlay absolute inset-0 bg-[#063b2a]/80 flex items-center justify-center gap-4 z-30">
-                            <a href="{{ $member['instagram'] }}" class="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-[#d4e9d4] transition-colors duration-200" title="Instagram">
+                        <div class="card-overlay absolute inset-0 bg-[#063b2a]/80 flex items-center justify-center gap-4 z-40">
+                            <a href="{{ $member['instagram'] }}" target="_blank" class="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-[#d4e9d4] transition-colors duration-200 shadow-md relative z-50" title="Instagram">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#063b2a]" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                                 </svg>
@@ -197,7 +190,6 @@
                         </div>
                     </div>
 
-                    {{-- Info --}}
                     <div class="p-5">
                         <p class="font-semibold text-gray-900 text-base">{{ $member['name'] }}</p>
                         <p class="text-xs font-semibold text-emerald-700 uppercase tracking-wide mt-0.5 mb-2">{{ $member['role'] }}</p>
@@ -208,7 +200,6 @@
             </div>
         </section>
 
-        {{-- FOOTER MARQUEE --}}
         <footer class="fixed bottom-0 left-0 w-full h-20 bg-white border-t border-gray-200 flex items-center z-[50]">
             <div class="animate-marquee">
                 @for ($i = 0; $i < 4; $i++)
