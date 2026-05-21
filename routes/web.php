@@ -60,6 +60,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/devices/{device}', [DeviceController::class, 'destroy'])
         ->name('devices.destroy');
 
+    Route::post('/devices/{device}/toggle-status', [DeviceController::class, 'toggleStatus'])
+        ->name('devices.toggle-status');
+
     Route::get('/devices/{device}/latest-data', [DeviceController::class, 'getLatestData'])
         ->name('devices.latest-data');
 

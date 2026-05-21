@@ -11,9 +11,13 @@ class SensorData extends Model
         'temperature',
         'humidity',
         'soil',
+        'pump_status',
+        'fan_status',
     ];
 
     protected $casts = [
+        'pump_status' => 'boolean',
+        'fan_status' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -45,5 +49,37 @@ class SensorData extends Model
             return 'red';
         }
         return 'green';
+    }
+
+    /**
+     * Get pump status indicator text
+     */
+    public function getPumpStatusIndicator()
+    {
+        return $this->pump_status ? 'Aktif' : 'Mati';
+    }
+
+    /**
+     * Get pump status badge color
+     */
+    public function getPumpStatusColor()
+    {
+        return $this->pump_status ? 'emerald' : 'gray';
+    }
+
+    /**
+     * Get fan status indicator text
+     */
+    public function getFanStatusIndicator()
+    {
+        return $this->fan_status ? 'Aktif' : 'Mati';
+    }
+
+    /**
+     * Get fan status badge color
+     */
+    public function getFanStatusColor()
+    {
+        return $this->fan_status ? 'blue' : 'gray';
     }
 }

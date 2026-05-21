@@ -15,7 +15,9 @@ class DeviceController extends Controller
     public function index()
     {
         if (Auth::check()) {
-            $devices = Auth::user()->devices()->with('sensorData')->get();
+            $devices = Auth::user()->devices()
+                ->with('sensorData')
+                ->paginate(10);
         } else {
             $devices = collect();
         }
@@ -26,14 +28,20 @@ class DeviceController extends Controller
     {
         $latest = $device->sensorData()->latest()->first();
 
-        // Get filtered data if filters are applied
+        // Get all filter parameters
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         $minTemp = $request->input('min_temp');
         $maxTemp = $request->input('max_temp');
+        $tempCondition = $request->input('temp_condition'); // panas/dingin
+        $specificTemp = $request->input('specific_temp'); // For specific temperature
+        $soilCondition = $request->input('soil_condition'); // dry/wet
 
-        if ($startDate || $endDate || $minTemp || $maxTemp) {
-            $weeklyData = $device->getFilteredTemperatureData($startDate, $endDate, $minTemp, $maxTemp);
+        // Build filter query
+        $hasFilters = $startDate || $endDate || $minTemp || $maxTemp || $tempCondition || $specificTemp || $soilCondition;
+
+        if ($hasFilters) {
+            $weeklyData = $device->getFilteredTemperatureData($startDate, $endDate, $minTemp, $maxTemp, $tempCondition, $specificTemp, $soilCondition);
         } else {
             $weeklyData = $device->getWeeklyTemperatureByDay();
         }
@@ -51,7 +59,10 @@ class DeviceController extends Controller
         $tempData = $history->pluck('temperature');
         $humData = $history->pluck('humidity');
 
-        return view('devices.show', compact('device', 'latest', 'labels', 'tempData', 'humData', 'weeklyData', 'startDate', 'endDate', 'minTemp', 'maxTemp'));
+        return view('devices.show', compact(
+            'device', 'latest', 'labels', 'tempData', 'humData', 'weeklyData', 
+            'startDate', 'endDate', 'minTemp', 'maxTemp', 'tempCondition', 'specificTemp', 'soilCondition'
+        ));
     }
 
     public function code(Device $device)
@@ -130,10 +141,29 @@ class DeviceController extends Controller
             abort(403, 'Unauthorized');
         }
 
-        $device->delete();
+        // Only allow deletion of inactive devices
+        if ($device->canBeDeleted()) {
+            $device->delete();
+            return redirect()->route('devices.index')
+                ->with('success', 'Device berhasil dihapus');
+        }
 
         return redirect()->route('devices.index')
-            ->with('success', 'Device berhasil dihapus');
+            ->with('error', 'Hanya device yang nonaktif dapat dihapus. Silakan nonaktifkan device terlebih dahulu.');
+    }
+
+    public function toggleStatus(Device $device)
+    {
+        // Check authorization
+        if ($device->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $device->toggleStatus();
+
+        $message = $device->is_active ? 'Device diaktifkan' : 'Device dinonaktifkan';
+        return redirect()->route('devices.index')
+            ->with('success', $message);
     }
 
     public function getLatestData(Device $device)

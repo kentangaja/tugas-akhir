@@ -12,17 +12,25 @@ class Device extends Model
         'user_id',
         'device_name',
         'api_key',
+        'is_active',
         'fan_threshold',
         'soil_dry_threshold',
-        'soil_wet_threshold'
+        'soil_wet_threshold',
+        'high_temp_threshold',
+        'high_temp_duration',
+        'last_high_temp_notification'
     ];
 
     protected $casts = [
+        'is_active' => 'boolean',
         'fan_threshold' => 'float',
         'soil_dry_threshold' => 'integer',
         'soil_wet_threshold' => 'integer',
+        'high_temp_threshold' => 'integer',
+        'high_temp_duration' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'last_high_temp_notification' => 'datetime',
     ];
 
     public function user()
@@ -81,9 +89,9 @@ class Device extends Model
     }
 
     /**
-     * Get temperature data with filters (date range, temperature)
+     * Get temperature data with filters (date range, temperature, soil)
      */
-    public function getFilteredTemperatureData($startDate = null, $endDate = null, $minTemp = null, $maxTemp = null)
+    public function getFilteredTemperatureData($startDate = null, $endDate = null, $minTemp = null, $maxTemp = null, $tempCondition = null, $specificTemp = null, $soilCondition = null)
     {
         $query = $this->sensorData();
 
@@ -101,6 +109,30 @@ class Device extends Model
 
         if ($maxTemp !== null) {
             $query->where('temperature', '<=', $maxTemp);
+        }
+
+        // Filter berdasarkan kondisi suhu (panas/dingin)
+        if ($tempCondition === 'panas') {
+            $threshold = $this->fan_threshold ?? 30;
+            $query->where('temperature', '>', $threshold);
+        } elseif ($tempCondition === 'dingin') {
+            $threshold = $this->fan_threshold ?? 30;
+            $query->where('temperature', '<', $threshold);
+        }
+
+        // Filter berdasarkan suhu spesifik dengan toleransi
+        if ($specificTemp !== null) {
+            $tolerance = 2;
+            $query->whereBetween('temperature', [$specificTemp - $tolerance, $specificTemp + $tolerance]);
+        }
+
+        // Filter berdasarkan kondisi kelembaban tanah (kering/basah)
+        if ($soilCondition === 'dry') {
+            $threshold = $this->soil_dry_threshold ?? 70;
+            $query->where('soil', '<', $threshold);
+        } elseif ($soilCondition === 'wet') {
+            $threshold = $this->soil_wet_threshold ?? 40;
+            $query->where('soil', '>', $threshold);
         }
 
         return $query
@@ -168,4 +200,55 @@ class Device extends Model
             ->orderBy('hour')
             ->get();
     }
+
+    /**
+     * Toggle device active status
+     */
+    public function toggleStatus()
+    {
+        $this->is_active = !$this->is_active;
+        return $this->save();
+    }
+
+    /**
+     * Check if device can be deleted (only inactive devices)
+     */
+    public function canBeDeleted()
+    {
+        return !$this->is_active;
+    }
+
+    /**
+     * Get status indicator text
+     */
+    public function getStatusIndicator()
+    {
+        return $this->is_active ? 'Aktif' : 'Nonaktif';
+    }
+
+    /**
+     * Get status badge color
+     */
+    public function getStatusBadgeColor()
+    {
+        return $this->is_active ? 'emerald' : 'gray';
+    }
+
+    /**
+     * Check if there's an active high temperature condition
+     */
+    public function isHighTemperatureActive()
+    {
+        $threshold = $this->high_temp_threshold ?? 35;
+        $durationMinutes = $this->high_temp_duration ?? 30;
+        $since = Carbon::now()->subMinutes($durationMinutes);
+
+        $highTempCount = $this->sensorData()
+            ->where('temperature', '>', $threshold)
+            ->where('created_at', '>=', $since)
+            ->count();
+
+        return $highTempCount > 0;
+    }
 }
+
