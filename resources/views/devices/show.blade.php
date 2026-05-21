@@ -276,11 +276,11 @@
                             </div>
 
                             {{-- Action Buttons --}}
-                            <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200 w-full">
-                                <button type="submit" class="flex-1 min-w-[120px] bg-[#059669] hover:bg-[#047857] text-white font-semibold py-3 px-4 rounded-lg transition-all text-sm hover:shadow-md active:scale-95 cursor-pointer">
+                            <div class="flex gap-3 pt-4 border-t border-gray-200">
+                                <button type="submit" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-all text-sm">
                                     Terapkan Filter
                                 </button>
-                                <a href="{{ route('devices.show', $device->id) }}" class="flex-1 min-w-[120px] bg-[#f3f4f6] hover:bg-[#e5e7eb] text-[#1f2937] font-semibold py-3 px-4 rounded-lg transition-all text-sm text-center hover:shadow-md">
+                                <a href="{{ route('devices.show', $device->id) }}" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-2.5 px-4 rounded-lg transition-all text-sm text-center">
                                     Reset Filter
                                 </a>
                             </div>
@@ -635,9 +635,9 @@
 
     // Initialize filter display on page load
     document.addEventListener('DOMContentLoaded', function() {
-        const filterTypeSelect = document.querySelector('select[name="filter_type"]');
-        if (filterTypeSelect) {
-            setFilterType(filterTypeSelect.value);
+        const filterType = document.querySelector('input[name="filter_type"]:checked');
+        if (filterType) {
+            setFilterType(filterType.value);
         }
     });
 

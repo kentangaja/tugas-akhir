@@ -30,8 +30,7 @@
 
 <div x-data="{ loading: false }" 
      x-show="loading" 
-     @loading.window="loading = true"
-     @loaded.window="loading = false"
+     @loading.window="loading = true" 
      class="fixed inset-0 z-50 flex items-center justify-center bg-white opacity-75">
     <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
 </div>
