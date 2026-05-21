@@ -45,17 +45,14 @@
                     class="block bg-emerald-900 p-6 rounded-[2.5rem] shadow-sm relative overflow-hidden h-40 hover:shadow-md transition-shadow duration-200 cursor-pointer flex flex-col justify-between bg-cover bg-center"
                     style="background-image: url('{{ asset('img/wallpaper.jpg') }}');">
                     
-                        <!-- Lapisan Gelap (Overlay) agar teks tetap mudah dibaca -->
                         <div class="absolute inset-0 bg-emerald-950/40 z-0"></div>
 
-                        <!-- Konten Atas: Avatar Tim -->
                         <div class="flex -space-x-2 relative z-10">
                             <div class="w-8 h-8 rounded-full bg-white border-2 border-emerald-900"></div>
                             <div class="w-8 h-8 rounded-full bg-white border-2 border-emerald-900"></div>
                             <div class="w-8 h-8 rounded-full bg-white border-2 border-emerald-900"></div>
                         </div>
                         
-                        <!-- Konten Bawah: Teks dan Ikon -->
                         <div class="p-3 h-fit w-fit rounded-[1rem] bg-white/10 backdrop-blur-md relative z-10">
                             <p class="text-lg font-bold text-white">
                                 Tim Kami 
@@ -99,91 +96,99 @@
 
             @php
                 $members = [
-                                [
-                                    'name'      => 'Bintang Putra Sugiarta',
-                                    'role'      => 'Ketua Tim & Konseptor',
-                                    'desc'      => 'Visiener utama Verte-Maison yang mengoordinasi seluruh aspek proyek, mulai dari integrasi teknologi hingga manajemen tim.',
-                                    'bg'        => 'bg-emerald-100',
-                                    'photo'     => 'img/team/bintang-putra.jpg',
-                                    'instagram' => 'https://www.instagram.com/aanomastar_?igsh=MTExMW9jaHE4ajB5NA==',
-                                ],
-                                [
-                                    'name'      => 'Bintang Adi Alvaro',
-                                    'role'      => 'Web Developer & Konstruksi Maket',
-                                    'desc'      => 'Bertanggung jawab atas pengembangan platform web monitoring serta implementasi struktur fisik pada maket greenhouse.',
-                                    'bg'        => 'bg-[#d4e9d4]',
-                                    'photo'     => 'img/team/bintang-adi.jpg',
-                                    'instagram' => 'https://www.instagram.com/toru_isi?igsh=MTZmM2RwOTFjOGRxNg==',
-                                ],
-                                [
-                                    'name'      => 'Hardiansyah Aditya',
-                                    'role'      => 'UI/UX Designer & Konstruksi Maket',
-                                    'desc'      => 'Merancang antarmuka dashboard yang intuitif serta memastikan estetika visual pada detail maket prototipe.',
-                                    'bg'        => 'bg-lime-100',
-                                    'photo'     => 'img/team/hardiansyah.jpg',
-                                    'instagram' => 'https://www.instagram.com/hardiansyaaaditys?igsh=cGtzMjZuMTkxdGxz',
-                                ],
-                                [
-                                    'name'      => 'Ajeng Nielza Itsna Mufida',
-                                    'role'      => 'WordPress Developer & Konstruksi Maket',
-                                    'desc'      => 'Mengelola dokumentasi proyek berbasis web serta membantu perakitan sistem otomatisasi pada model maket.',
-                                    'bg'        => 'bg-emerald-50',
-                                    'photo'     => 'img/team/ajeng.jpg',
-                                    'instagram' => 'https://www.instagram.com/lowwbatryy19?igsh=MWl0ZTVpdDlwbG5zYQ==',
-                                ],
-                                [
-                                    'name'      => 'Akmal Wildan Pratama',
-                                    'role'      => 'Data Analyst & Konstruksi Maket',
-                                    'desc'      => 'Menganalisis data sensor untuk akurasi monitoring sekaligus memastikan fungsionalitas teknis pada maket.',
-                                    'bg'        => 'bg-green-100',
-                                    'photo'     => 'img/team/akmal.jpg',
-                                    'instagram' => 'https://www.instagram.com/wildannnp_?igsh=MWJ4cW92bmtwZG9heQ%3D%3D&utm_source=qr',
-                                ],
-                                [
-                                    'name'      => 'Arweyn Abbygail',
-                                    'role'      => 'Technical Writer & Konstruksi Maket',
-                                    'desc'      => 'Menyusun laporan teknis secara sistematis dan mengawasi kualitas pengerjaan maket agar sesuai spesifikasi.',
-                                    'bg'        => 'bg-teal-100',
-                                    'photo'     => 'img/team/arweyn.jpg',
-                                    'instagram' => 'https://www.instagram.com/__dontlookkiddos?igsh=cDdsbHBjaHV6ejV1',
-                                ],
-                                [
-                                    'name'      => 'Bilqys Thalita Efendy',
-                                    'role'      => 'WordPress Specialist & Konstruksi Maket',
-                                    'desc'      => 'Optimasi konten landing page proyek dan berkolaborasi dalam integrasi elemen visual pada maket.',
-                                    'bg'        => 'bg-emerald-100',
-                                    'photo'     => 'img/team/bilqys.jpg',
-                                    'instagram' => 'https://www.instagram.com/bilqis_thal?igsh=MXd0YWJkczljOGExcA==',
-                                ],
-                                [
-                                    'name'      => 'Ayda Sazmita',
-                                    'role'      => 'Marketing & Konstruksi Maket',
-                                    'desc'      => 'Mengomunikasikan nilai inovasi Verte-Maison ke audiens serta membantu presentasi visual melalui detail maket.',
-                                    'bg'        => 'bg-[#d4e9d4]',
-                                    'photo'     => 'img/team/ayda.jpg',
-                                    'instagram' => 'https://www.instagram.com/cncer_ay?igsh=djFyc2YzeHZ5Zndl',
-                                ],
-                            ];
+                    [
+                        'name'      => 'Bintang Putra Sugiarta',
+                        'role'      => 'Ketua Tim & Konseptor',
+                        'desc'      => 'Visiener utama Verte-Maison yang mengoordinasi seluruh aspek proyek, mulai dari integrasi teknologi hingga manajemen tim.',
+                        'bg'        => 'bg-emerald-100',
+                        'photo'     => 'img/team/bintang-putra.jpg',
+                        'instagram' => 'https://www.instagram.com/aanomastar_?igsh=MTExMW9jaHE4ajB5NA==',
+                    ],
+                    [
+                        'name'      => 'Bintang Adi Alvaro',
+                        'role'      => 'Web Developer & Konstruksi Maket',
+                        'desc'      => 'Bertanggung jawab atas pengembangan platform web monitoring serta implementasi struktur fisik pada maket greenhouse.',
+                        'bg'        => 'bg-[#d4e9d4]',
+                        'photo'     => 'img/team/bintang-adi.jpg',
+                        'instagram' => 'https://www.instagram.com/toru_isi?igsh=MTZmM2RwOTFjOGRxNg==',
+                    ],
+                    [
+                        'name'      => 'Hardiansyah Aditya',
+                        'role'      => 'UI/UX Designer & Konstruksi Maket',
+                        'desc'      => 'Merancang antarmuka dashboard yang intuitif serta memastikan estetika visual pada detail maket prototipe.',
+                        'bg'        => 'bg-lime-100',
+                        'photo'     => 'img/team/hardiansyah.jpg',
+                        'instagram' => 'https://www.instagram.com/hardiansyaaaditys?igsh=cGtzMjZuMTkxdGxz',
+                    ],
+                    [
+                        'name'      => 'Ajeng Nielza Itsna Mufida',
+                        'role'      => 'WordPress Developer & Konstruksi Maket',
+                        'desc'      => 'Mengelola dokumentasi proyek berbasis web serta membantu perakitan sistem otomatisasi pada model maket.',
+                        'bg'        => 'bg-emerald-50',
+                        'photo'     => 'img/team/ajeng.jpg',
+                        'instagram' => 'https://www.instagram.com/lowwbatryy19?igsh=MWl0ZTVpdDlwbG5zYQ==',
+                    ],
+                    [
+                        'name'      => 'Akmal Wildan Pratama',
+                        'role'      => 'Data Analyst & Konstruksi Maket',
+                        'desc'      => 'Menganalisis data sensor untuk akurasi monitoring sekaligus memastikan fungsionalitas teknis pada maket.',
+                        'bg'        => 'bg-green-100',
+                        'photo'     => 'img/team/akmal.jpg',
+                        'instagram' => 'https://www.instagram.com/wildannnp_?igsh=MWJ4cW92bmtwZG9heQ%3D%3D&utm_source=qr',
+                    ],
+                    [
+                        'name'      => 'Arweyn Abbygail',
+                        'role'      => 'Technical Writer & Konstruksi Maket',
+                        'desc'      => 'Menyusun laporan teknis secara sistematis dan mengawasi kualitas pengerjaan maket agar sesuai spesifikasi.',
+                        'bg'        => 'bg-teal-100',
+                        'photo'     => 'img/team/arweyn.jpg',
+                        'instagram' => 'https://www.instagram.com/__dontlookkiddos?igsh=cDdsbHBjaHV6ejV1',
+                    ],
+                    [
+                        'name'      => 'Bilqys Thalita Efendy',
+                        'role'      => 'WordPress Specialist & Konstruksi Maket',
+                        'desc'      => 'Optimasi konten landing page proyek dan berkolaborasi dalam integrasi elemen visual pada maket.',
+                        'bg'        => 'bg-emerald-100',
+                        'photo'     => 'img/team/bilqys.jpg',
+                        'instagram' => 'https://www.instagram.com/bilqis_thal?igsh=MXd0YWJkczljOGExcA==',
+                    ],
+                    [
+                        'name'      => 'Ayda Sazmita',
+                        'role'      => 'Marketing & Konstruksi Maket',
+                        'desc'      => 'Mengomunikasikan nilai inovasi Verte-Maison ke audiens serta membantu presentasi visual melalui detail maket.',
+                        'bg'        => 'bg-[#d4e9d4]',
+                        'photo'     => 'img/team/ayda.jpg',
+                        'instagram' => 'https://www.instagram.com/cncer_ay?igsh=djFyc2YzeHZ5Zndl',
+                    ],
+                ];
             @endphp
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                 @foreach ($members as $member)
                 <div class="team-card group relative rounded-[2rem] overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 {{ $member['bg'] }}">
 
-                    {{-- Foto --}}
-                    <div class="relative h-48 overflow-hidden bg-white/40">
-                        <div class="card-photo absolute inset-0 flex items-center justify-center bg-cover bg-center bg-no-repeat w-full h-full" style="background-image: url('{{ asset($member['photo']) }}')">
-                            @if (!file_exists(public_path($member['photo'])))
+                    {{-- Bagian Kontainer Foto (Diperbaiki agar tidak terpotong/nge-zoom) --}}
+                    <div class="relative h-56 bg-white/40 flex items-center justify-center overflow-hidden">
+                        
+                        <div class="absolute inset-0 bg-cover bg-center blur-md opacity-25 scale-110" style="background-image: url('{{ asset($member['photo']) }}')"></div>
+
+                        <img src="{{ asset($member['photo']) }}" 
+                             class="card-photo relative z-10 h-full w-auto object-contain mx-auto transition-transform duration-400 group-hover:scale-105" 
+                             alt="{{ $member['name'] }}">
+
+                        {{-- Fallback jika file foto tidak ditemukan --}}
+                        @if (!file_exists(public_path($member['photo'])))
+                            <div class="absolute inset-0 z-20 flex items-center justify-center bg-white/40">
                                 <div class="w-20 h-20 rounded-full bg-white/70 flex items-center justify-center shadow-sm">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-emerald-700">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                                     </svg>
                                 </div>
-                            @endif
-                        </div>
+                            </div>
+                        @endif
 
                         {{-- Overlay social media saat hover --}}
-                        <div class="card-overlay absolute inset-0 bg-[#063b2a]/80 flex items-center justify-center gap-4">
+                        <div class="card-overlay absolute inset-0 bg-[#063b2a]/80 flex items-center justify-center gap-4 z-30">
                             <a href="{{ $member['instagram'] }}" class="w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-[#d4e9d4] transition-colors duration-200" title="Instagram">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-[#063b2a]" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
