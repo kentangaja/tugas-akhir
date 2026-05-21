@@ -277,10 +277,10 @@
 
                             {{-- Action Buttons --}}
                             <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200 w-full">
-                                <button type="submit" class="flex-1 min-w-[120px] bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-lg transition-all text-sm hover:shadow-md active:scale-95 cursor-pointer">
+                                <button type="submit" style="background-color: #059669 !important; color: white !important; display: flex !important; opacity: 1 !important; visibility: visible !important;" class="flex-1 min-w-[120px] bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-lg transition-all text-sm hover:shadow-md active:scale-95 cursor-pointer">
                                     Terapkan Filter
                                 </button>
-                                <a href="{{ route('devices.show', $device->id) }}" class="flex-1 min-w-[120px] bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-3 px-4 rounded-lg transition-all text-sm text-center hover:shadow-md">
+                                <a href="{{ route('devices.show', $device->id) }}" style="background-color: #f3f4f6 !important; color: #1f2937 !important; display: flex !important; opacity: 1 !important; visibility: visible !important;" class="flex-1 min-w-[120px] bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-3 px-4 rounded-lg transition-all text-sm text-center hover:shadow-md">
                                     Reset Filter
                                 </a>
                             </div>

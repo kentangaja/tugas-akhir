@@ -138,12 +138,14 @@
                             <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200 w-full">
                                 <button 
                                     type="submit"
+                                    style="background-color: #059669 !important; color: white !important; display: flex !important; opacity: 1 !important; visibility: visible !important;"
                                     class="flex-1 min-w-[140px] bg-emerald-600 hover:bg-emerald-700 text-white py-3 px-6 rounded-lg font-semibold transition-all shadow-md hover:shadow-lg active:scale-95 text-sm sm:text-base cursor-pointer"
                                 >
                                     Perbarui Stasiun
                                 </button>
                                 <a 
                                     href="{{ route('devices.index') }}"
+                                    style="background-color: #f3f4f6 !important; color: #1f2937 !important; display: flex !important; opacity: 1 !important; visibility: visible !important;"
                                     class="flex-1 min-w-[140px] bg-gray-100 hover:bg-gray-200 text-gray-800 py-3 px-6 rounded-lg font-semibold transition-all text-sm sm:text-base text-center"
                                 >
                                     Batal
