@@ -96,6 +96,13 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => 'require',
+            
+            // TAMBAHKAN BLOK OPTIONS DI BAWAH INI
+            'options' => [
+                \PDO::ATTR_EMULATE_PREPARES => true,
+                \PDO::ATTR_PERSISTENT => false,
+                \PDO::ATTR_TIMEOUT => 3, // Maksimal menunggu respon database 3 detik
+            ],
         ],
 
         'sqlsrv' => [

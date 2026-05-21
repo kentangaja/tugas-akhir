@@ -28,26 +28,28 @@
         </main>
     </div>
 
-    <!-- Loading Screen -->
-    <div x-data="{ loading: false }" 
-         x-show="loading" 
-         x-transition.opacity.duration.500ms
-         @loading.window="loading = $event.detail.isLoading" 
-         class="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-90">
-        
-        <div class="flex flex-col items-center">
-            <video
-                x-init="$el.playbackRate = 2.5" 
-                autoplay 
-                loop 
-                muted 
-                playsinline 
-                class="w-64 h-64">
-                <source src="{{ asset('img/loading.webm') }}" type="video/webm">
-                Your browser does not support the video tag.
-            </video>         
-            <p class="mt-4 text-gray-600 font-medium">Mohon tunggu...</p>
-        </div>
+    {{-- Loading Overlay (Pure JavaScript) --}}
+    <div id="loading-overlay"
+         style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(255,255,255,0.9); align-items:center; justify-content:center; flex-direction:column;">
+        <video id="loading-video" autoplay loop muted playsinline style="width:256px; height:256px;">
+            <source src="{{ asset('img/loading.webm') }}" type="video/webm">
+            Your browser does not support the video tag.
+        </video>
+        <p style="margin-top:1rem; color:#4b5563; font-weight:500;">Mohon tunggu...</p>
     </div>
+
+    <script>
+        // Set video speed
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('loading-video');
+            if (video) video.playbackRate = 2.5;
+        });
+
+        // Safety net - paksa hilang setelah 3 detik
+        setTimeout(() => {
+            const overlay = document.getElementById('loading-overlay');
+            if (overlay) overlay.style.display = 'none';
+        }, 3000);
+    </script>
 </body>
 </html>

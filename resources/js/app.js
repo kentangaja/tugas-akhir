@@ -14,11 +14,11 @@ NProgress.configure({
     trickleSpeed: 200,  
 });
 
-// Helper function to dispatch loading event
+// Helper function - langsung manipulasi DOM, tidak pakai event
 window.showLoading = (isLoading = true) => {
-    window.dispatchEvent(new CustomEvent('loading', { 
-        detail: { isLoading } 
-    }));
+    const overlay = document.getElementById('loading-overlay');
+    if (!overlay) return;
+    overlay.style.display = isLoading ? 'flex' : 'none';
 };
 
 // Setup axios interceptors for loading screen
@@ -47,7 +47,13 @@ window.addEventListener('beforeunload', () => {
     window.showLoading(true);
 });
 
-window.addEventListener('load', () => {
+// Hide loading when page is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    NProgress.done();
+    window.showLoading(false);
+});
+
+window.addEventListener('pageshow', () => {
     NProgress.done();
     window.showLoading(false);
 });
