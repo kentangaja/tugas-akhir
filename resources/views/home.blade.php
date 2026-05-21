@@ -177,8 +177,8 @@
                                     @endif
                                 </div>
                                 <div class="relative z-10">
-                                    <p class="font-semibold text-gray-900 text-base">{{ $member['name'] }}</p>
-                                    <p class="text-sm text-emerald-700 font-medium mt-1">{{ $member['role'] }}</p>
+                                    <p class="font-semibold text-white text-base">{{ $member['name'] }}</p>
+                                    <p class="text-sm text-emerald-500 font-medium mt-1">{{ $member['role'] }}</p>
                                 </div>
                             </div>
                         </div>
