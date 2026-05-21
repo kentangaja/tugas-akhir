@@ -132,13 +132,13 @@ class Device extends Model
             $threshold = $this->soil_dry_threshold ?? 70;
             // Kering = moisture % < dry_threshold
             // moisture% < threshold => 100 - (soil/1023)*100 < threshold => soil > (1023 * (100-threshold) / 100)
-            $soilRawThreshold = (1023 * (100 - $threshold)) / 100;
+            $soilRawThreshold = (int)((1023 * (100 - $threshold)) / 100);
             $query->where('soil', '>', $soilRawThreshold);
         } elseif ($soilCondition === 'wet') {
             $threshold = $this->soil_wet_threshold ?? 40;
             // Basah = moisture % > wet_threshold
             // moisture% > threshold => 100 - (soil/1023)*100 > threshold => soil < (1023 * (100-threshold) / 100)
-            $soilRawThreshold = (1023 * (100 - $threshold)) / 100;
+            $soilRawThreshold = (int)((1023 * (100 - $threshold)) / 100);
             $query->where('soil', '<', $soilRawThreshold);
         }
 
