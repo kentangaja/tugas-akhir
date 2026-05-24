@@ -150,9 +150,66 @@
                         @endif
 
                         @if (session('success'))
-                            <div class="mb-4 p-4 rounded-2xl bg-green-50 border border-green-200">
-                                <p class="text-green-800 font-medium text-sm">{{ session('success') }}</p>
+                            <div id="successNotification" class="fixed top-6 right-6 max-w-md z-[9999]" style="animation: slideIn 0.3s ease-out forwards;">
+                                <div class="bg-green-50 border border-green-200 rounded-2xl p-5 shadow-lg">
+                                    <div class="flex items-start gap-3">
+                                        <div class="flex-shrink-0">
+                                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="text-green-800 font-semibold text-sm">Pesan Terkirim!</p>
+                                            <p class="text-green-700 text-sm mt-1">{{ session('success') }}</p>
+                                        </div>
+                                        <button onclick="closeNotification()" class="flex-shrink-0 text-green-400 hover:text-green-600 transition-colors">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
+
+                            <style>
+                                @keyframes slideIn {
+                                    from {
+                                        opacity: 0;
+                                        transform: translateY(-20px) translateX(20px);
+                                    }
+                                    to {
+                                        opacity: 1;
+                                        transform: translateY(0) translateX(0);
+                                    }
+                                }
+                                @keyframes slideOut {
+                                    from {
+                                        opacity: 1;
+                                        transform: translateY(0) translateX(0);
+                                    }
+                                    to {
+                                        opacity: 0;
+                                        transform: translateY(-20px) translateX(20px);
+                                    }
+                                }
+                            </style>
+
+                            <script>
+                                function closeNotification() {
+                                    const notification = document.getElementById('successNotification');
+                                    if (notification) {
+                                        notification.style.animation = 'slideOut 0.3s ease-out forwards';
+                                        setTimeout(() => {
+                                            notification.remove();
+                                        }, 300);
+                                    }
+                                }
+
+                                // Auto-hide after 5 seconds
+                                setTimeout(() => {
+                                    closeNotification();
+                                }, 5000);
+                            </script>
                         @endif
 
                         <form action="{{ route('contact.store') }}" method="POST">
@@ -176,7 +233,7 @@
                             <div class="mt-4">
                                 <label for="subject" class="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-2">Subjek</label>
                                 <select id="subject" name="subject" class="input-field">
-                                    <option value="" disabled selected>Pilih subjek pesan</option>
+                                    <option value="disabled selected">Pilih subjek pesan</option>
                                     <option value="general">Pertanyaan Umum</option>
                                     <option value="technical">Bantuan Teknis</option>
                                     <option value="partnership">Kerja Sama</option>
@@ -209,14 +266,14 @@
             <div class="animate-marquee">
                 @for ($i = 0; $i < 4; $i++)
                 <div class="flex items-center gap-12 px-6">
-                    <span class="text-2xl font-light text-gray-800 uppercase tracking-tighter whitespace-nowrap">
+                    <span class="text-2xl font-light text-emerald-900 uppercase tracking-tighter whitespace-nowrap">
                         Green Infrastructure Design
                     </span>
-                    <div class="w-8 h-8 bg-gray-300 rounded-lg rotate-12 flex-shrink-0"></div>
-                    <span class="text-2xl font-light text-gray-800 uppercase tracking-tighter whitespace-nowrap">
+                    <div class="w-8 h-8 bg-emerald-900 rounded-lg rotate-12 flex-shrink-0"></div>
+                    <span class="text-2xl font-light text-emerald-900 uppercase tracking-tighter whitespace-nowrap">
                         environmental impact assessment
                     </span>
-                    <div class="w-8 h-8 bg-gray-400 rounded-full flex-shrink-0"></div>
+                    <div class="w-8 h-8 bg-emerald-900 rounded-full flex-shrink-0"></div>
                 </div>
                 @endfor
             </div>

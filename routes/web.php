@@ -60,8 +60,14 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/devices/{device}', [DeviceController::class, 'destroy'])
         ->name('devices.destroy');
 
+    Route::post('/devices/{device}/toggle-status', [DeviceController::class, 'toggleStatus'])
+        ->name('devices.toggle-status');
+
     Route::get('/devices/{device}/latest-data', [DeviceController::class, 'getLatestData'])
         ->name('devices.latest-data');
+
+    Route::get('/devices/{device}/export-pdf', [DeviceController::class, 'exportPDF'])
+        ->name('devices.export-pdf');
         
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

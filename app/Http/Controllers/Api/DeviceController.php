@@ -46,15 +46,17 @@ class DeviceController extends Controller
     {
         $validated = $request->validate([
             'device_name' => 'required|string|max:255',
-            'fan_threshold' => 'required|numeric|min:0|max:100',
-            'soil_threshold' => 'required|integer|min:0|max:100',
+            'fan_threshold' => 'sometimes|numeric|min:0|max:50',
+            'soil_dry_threshold' => 'sometimes|integer|min:0|max:100',
+            'soil_wet_threshold' => 'sometimes|integer|min:0|max:100',
         ]);
 
         $device = $request->user()->devices()->create([
             'device_name' => $validated['device_name'],
             'api_key' => 'key_' . Str::random(40),
-            'fan_threshold' => $validated['fan_threshold'],
-            'soil_threshold' => $validated['soil_threshold'],
+            'fan_threshold' => $validated['fan_threshold'] ?? null,
+            'soil_dry_threshold' => $validated['soil_dry_threshold'] ?? 70,
+            'soil_wet_threshold' => $validated['soil_wet_threshold'] ?? 40,
         ]);
 
         return response()->json([
@@ -73,8 +75,9 @@ class DeviceController extends Controller
 
         $validated = $request->validate([
             'device_name' => 'sometimes|string|max:255',
-            'fan_threshold' => 'sometimes|numeric|min:0|max:100',
-            'soil_threshold' => 'sometimes|integer|min:0|max:100',
+            'fan_threshold' => 'sometimes|numeric|min:0|max:50',
+            'soil_dry_threshold' => 'sometimes|integer|min:0|max:100',
+            'soil_wet_threshold' => 'sometimes|integer|min:0|max:100',
         ]);
 
         $device->update($validated);

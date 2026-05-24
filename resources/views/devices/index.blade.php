@@ -7,7 +7,7 @@
                     <h1 class="text-4xl md:text-5xl font-medium tracking-tight">
                         Connected <span class="italic font-normal text-emerald-700">Greenhouses</span>
                     </h1>
-                    <p class="text-gray-500 mt-2">Manage and monitor your automated urban spaces.</p>
+                    <p class="text-gray-500 mt-2">Kelola dan pantau ruang greenhouse Anda..</p>
                 </div>
                 
                 @auth
@@ -20,7 +20,7 @@
 
             <div class="grid grid-cols-1 gap-8">
                 @forelse ($devices as $device)
-                    <div class="bg-[#f8faf8] p-8 rounded-[3rem] shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                    <div class="bg-[#f8faf8] p-8 rounded-[3rem] shadow-sm border border-gray-100 hover:shadow-md transition-shadow @if(!$device->is_active) opacity-60 @endif">
                         {{-- Device Header Card --}}
                         <div class="relative overflow-hidden group mb-8">
                             <div class="absolute top-0 right-0 w-24 h-24 bg-[#d4e9d4] opacity-20 rounded-bl-[4rem] -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
@@ -40,14 +40,16 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <span class="bg-emerald-100 text-emerald-700 text-[10px] uppercase font-bold px-3 py-1 rounded-full">Active</span>
+                                    <span class="@if($device->is_active) bg-emerald-100 text-emerald-700 @else bg-gray-100 text-gray-600 @endif text-[10px] uppercase font-bold px-3 py-1 rounded-full">
+                                        {{ $device->getStatusIndicator() }}
+                                    </span>
                                 </div>
 
                                 {{-- Action Buttons --}}
                                 <div class="flex flex-wrap items-center gap-3">
                                     <a href="{{ route('devices.code', $device->id) }}"
                                     class="bg-white border border-[#d4e9d4] text-black px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all shadow-sm hover:bg-gray-50">
-                                        View Code
+                                        Code
                                         <svg xmlns="http://www.w3.org/2000/svg" 
                                             fill="none" 
                                             viewBox="0 0 24 24" 
@@ -60,7 +62,7 @@
                                     
                                     <a href="{{ route('devices.show', $device->id) }}"
                                     class="flex-1 flex items-center justify-center bg-[#063b2a] text-white py-2.5 px-4 rounded-2xl font-medium text-sm hover:bg-[#052a1d] transition-all">
-                                        View Dashboard 
+                                        Dashboard 
                                         <svg xmlns="http://www.w3.org/2000/svg" 
                                             fill="none" 
                                             viewBox="0 0 24 24" 
@@ -84,19 +86,21 @@
                                         </svg>
                                     </a>
 
-                                    <form method="POST" action="{{ route('devices.destroy', $device->id) }}" class="inline" onsubmit="return confirm('Yakin ingin menghapus device ini?');">
+                                    {{-- Toggle Status Button --}}
+                                    <form method="POST" action="{{ route('devices.toggle-status', $device->id) }}" class="inline">
                                         @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="bg-white border border-red-200 text-red-600 px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all shadow-sm hover:bg-red-50">
-                                            Delete
-                                            <svg xmlns="http://www.w3.org/2000/svg" 
-                                                fill="none" 
-                                                viewBox="0 0 24 24" 
-                                                stroke-width="1.5" 
-                                                stroke="currentColor" 
-                                                class="w-4 h-4 inline-block text-red-600 ms-1">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 2.991a.75.75 0 00-1.324-.74L3.06 19.748a.75.75 0 001.323.74m6.14-12.753l12.432 12.432c.307.307.47.753.47 1.207V21a.75.75 0 01-.75.75H2.991a.75.75 0 01-.75-.75V4.457c0-.454.163-.9.47-1.207L9.5 9z" />
-                                            </svg>
+                                        <button type="submit" class="@if($device->is_active) bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 @else bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 @endif px-5 py-2.5 rounded-2xl text-sm font-semibold transition-all shadow-sm">
+                                            @if($device->is_active) 
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline-block me-1">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                                Nonaktifkan
+                                            @else 
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 inline-block me-1">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                                </svg>
+                                                Aktifkan
+                                            @endif
                                         </button>
                                     </form>
 
@@ -115,6 +119,13 @@
                     </div>
                 @endforelse
             </div>
+
+            {{-- Pagination --}}
+            @if ($devices->count())
+                <div class="mt-12 flex justify-center">
+                    {{ $devices->links() }}
+                </div>
+            @endif
         </main>
     </div>
 

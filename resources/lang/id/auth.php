@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'Email' => 'Email',
+    'Password' => 'Kata Sandi',
+    'Name' => 'Nama',
+    'Confirm Password' => 'Konfirmasi Kata Sandi',
+    'Already registered?' => 'Sudah terdaftar?',
+    'Remember me' => 'Ingat saya',
+    'Forgot your password?' => 'Lupa kata sandi?',
+    'Log in' => 'Masuk',
+    'Register' => 'Daftar',
+    'Daftar dengan Google' => 'Daftar dengan Google',
+    'Atau' => 'Atau',
+    'Thanks for signing up!' => 'Terima kasih telah mendaftar!',
+    'Email Verification Link' => 'Tautan Verifikasi Email',
+    'Resend Verification Email' => 'Kirim Ulang Email Verifikasi',
+    'Log Out' => 'Keluar',
+    'Email Password Reset Link' => 'Tautan Reset Kata Sandi Email',
+    'Reset Password' => 'Reset Kata Sandi',
+    'Your email address is unverified' => 'Alamat email Anda belum diverifikasi',
+    'Click here to re-send' => 'Klik di sini untuk mengirim ulang',
+    'A new verification link has been sent' => 'Tautan verifikasi baru telah dikirim',
+    'A new verification link has been sent to the email address you provided during registration.' => 'Tautan verifikasi baru telah dikirim ke alamat email yang Anda berikan saat mendaftar.',
+    'Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.' => 'Lupa kata sandi? Tidak masalah. Beri tahu kami alamat email Anda dan kami akan mengirimkan tautan reset kata sandi yang memungkinkan Anda memilih yang baru.',
+    'Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.' => 'Terima kasih telah mendaftar! Sebelum memulai, bisakah Anda memverifikasi alamat email Anda dengan mengklik tautan yang baru saja kami kirimkan? Jika Anda tidak menerima email, kami dengan senang hati akan mengirimkan yang lain.',
+];

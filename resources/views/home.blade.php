@@ -33,28 +33,40 @@
             
             <div class="mb-6 flex justify-end">
                 <h1 class="text-4xl md:text-5xl font-medium text-gray-900 tracking-tight leading-tight">
-                    Reimagining Urban Spaces <br>
-                    <span class="bg-[#d4e9d4] px-4 py-1 rounded-full italic font-normal text-3xl md:text-4xl">Greening</span> the World
+                    Menata Ruang <br>
+                    <span class="bg-[#d4e9d4] px-4 py-1 rounded-full italic font-normal text-3xl md:text-4xl">Menanam</span> Masa Depan
                 </h1>
             </div>
 
             <div class="grid grid-cols-12 gap-6 items-start">
                 <div class="col-span-12 md:col-span-3">
-                    <a href="#our-team" class="block bg-[#d4e9d4] p-6 rounded-[2.5rem] shadow-sm relative overflow-hidden h-40 hover:shadow-md transition-shadow duration-200 cursor-pointer">
-                        <div class="flex -space-x-2 mb-4">
-                            <div class="w-8 h-8 rounded-full bg-gray-400 border-2 border-[#d4e9d4]"></div>
-                            <div class="w-8 h-8 rounded-full bg-gray-500 border-2 border-[#d4e9d4]"></div>
-                            <div class="w-8 h-8 rounded-full bg-gray-500 border-2 border-[#d4e9d4]"></div>
+                    <a href="#our-team" 
+                    class="block bg-emerald-900 p-6 rounded-[2.5rem] shadow-sm relative overflow-hidden h-40 hover:shadow-md transition-shadow duration-200 cursor-pointer flex flex-col justify-between bg-cover bg-center"
+                    style="background-image: url('{{ asset('img/wallpaper.jpg') }}');">
+                    
+                        <!-- Lapisan Gelap (Overlay) agar teks tetap mudah dibaca -->
+                        <div class="absolute inset-0 bg-emerald-950/40 z-0"></div>
+
+                        <!-- Konten Atas: Avatar Tim -->
+                        <div class="flex -space-x-2 relative z-10">
+                            <div class="w-8 h-8 rounded-full bg-white border-2 border-emerald-900"></div>
+                            <div class="w-8 h-8 rounded-full bg-white border-2 border-emerald-900"></div>
+                            <div class="w-8 h-8 rounded-full bg-white border-2 border-emerald-900"></div>
                         </div>
-                        <p class="text-lg font-bold text-emerald-900">Our Team 
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block text-emerald-700 ms-1">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
-                            </svg>
-                        </p>
+                        
+                        <!-- Konten Bawah: Teks dan Ikon -->
+                        <div class="p-3 h-fit w-fit rounded-[1rem] bg-white/10 backdrop-blur-md relative z-10">
+                            <p class="text-lg font-bold text-white">
+                                Tim Kami 
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block text-white ms-1">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
+                                </svg>
+                            </p>
+                        </div>
                     </a>
                     <div class="flex gap-3 pt-12">
-                        <button class="px-6 py-2 border border-gray-300 rounded-full text-xs font-medium bg-white hover:bg-gray-100 transition-colors duration-200">Explore</button>
-                        <button class="px-6 py-2 bg-[#063b2a] text-white rounded-full text-xs font-medium hover:bg-[#052a1d] transition-colors duration-200">Work with Us</button>
+                        <button class="px-6 py-2 border border-gray-300 rounded-full text-xs font-medium bg-white hover:bg-gray-100 transition-colors duration-200">Jelajahi</button>
+                        <button class="px-6 py-2 bg-[#063b2a] text-white rounded-full text-xs font-medium hover:bg-[#052a1d] transition-colors duration-200">Bekerja dengan Kami</button>
                     </div>
                 </div>
 
@@ -67,7 +79,7 @@
 
                         <div class="absolute bottom-6 left-6 bg-white/10 backdrop-blur-md p-6 rounded-[2.5rem] max-w-[280px] shadow-sm">
                             <p class="text-xs md:text-sm text-white leading-relaxed font-medium">
-                                We believe that the future of cities lies in smart, eco-friendly solutions that address the pressing challenges of urbanization.
+                                Kami percaya bahwa masa depan kota terletak pada solusi cerdas dan ramah lingkungan yang mengatasi tantangan mendesak urbanisasi.
                             </p>
                         </div>
                     </div>
@@ -98,27 +110,75 @@
                 <div class="animate-team-marquee">
                     @php
                         $team = [
-                            ['name' => 'Andi Pratama', 'role' => 'Founder & CEO', 'bg' => 'bg-emerald-100'],
-                            ['name' => 'Sari Dewi', 'role' => 'Lead Engineer', 'bg' => 'bg-[#d4e9d4]'],
-                            ['name' => 'Budi Santoso', 'role' => 'UI/UX Designer', 'bg' => 'bg-lime-100'],
-                            ['name' => 'Rina Kusuma', 'role' => 'IoT Specialist', 'bg' => 'bg-emerald-50'],
-                            ['name' => 'Deni Wahyu', 'role' => 'Data Analyst', 'bg' => 'bg-green-100'],
-                            ['name' => 'Maya Putri', 'role' => 'Agri Expert', 'bg' => 'bg-teal-100'],
-                        ];
+                                        [
+                                            'name' => 'Bintang Putra Sugiarta',
+                                            'role' => 'Ketua Tim & Konseptor',
+                                            'bg'   => 'bg-emerald-100',
+                                            'photo' => 'img/team/bintang-putra.jpg',
+                                        ],
+                                        [
+                                            'name' => 'Bintang Adi Alvaro',
+                                            'role' => 'Website & Maket Developer',
+                                            'bg'   => 'bg-[#d4e9d4]',
+                                            'photo' => 'img/team/bintang-adi.jpg',
+                                        ],
+                                        [
+                                            'name' => 'Hardiansyah Aditya',
+                                            'role' => 'UI/UX Designer & Maket Specialist',
+                                            'bg'   => 'bg-lime-100',
+                                            'photo' => 'img/team/hardiansyah.jpg',
+                                        ],
+                                        [
+                                            'name' => 'Ajeng Nielza Itsna Mufida',
+                                            'role' => 'WordPress & Maket Specialist',
+                                            'bg'   => 'bg-emerald-50',
+                                            'photo' => 'img/team/ajeng.jpg',
+                                        ],
+                                        [
+                                            'name' => 'Akmal Wildan Pratama',
+                                            'role' => 'Data Analyst & Maket Engineer',
+                                            'bg'   => 'bg-green-100',
+                                            'photo' => 'img/team/akmal.jpg',
+                                        ],
+                                        [
+                                            'name' => 'Arweyn Abbygail',
+                                            'role' => 'Technical Report & Maket Coordinator',
+                                            'bg'   => 'bg-teal-100',
+                                            'photo' => 'img/team/arweyn.jpg',
+                                        ],
+                                        [
+                                            'name' => 'Bilqys Thalita Efendy',
+                                            'role' => 'WordPress & Maket Specialist',
+                                            'bg'   => 'bg-emerald-100',
+                                            'photo' => 'img/team/bilqys.jpg',
+                                        ],
+                                        [
+                                            'name' => 'Ayda Sazmita',
+                                            'role' => 'Marketing & Maket Designer',
+                                            'bg'   => 'bg-[#d4e9d4]',
+                                            'photo' => 'img/team/ayda.jpg',
+                                        ],
+                                    ];
                     @endphp
         
                     @for ($i = 0; $i < 2; $i++)
                         @foreach ($team as $member)
                         <div class="mx-3 w-52 flex-shrink-0">
-                            <div class="{{ $member['bg'] }} rounded-[2rem] p-6 h-64 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow duration-300">
-                                <div class="w-14 h-14 rounded-full bg-white/70 flex items-center justify-center shadow-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-emerald-700">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                    </svg>
+                            <div class="{{ $member['bg'] }} rounded-[2rem] p-6 h-64 flex flex-col justify-between shadow-sm hover:shadow-md transition-shadow duration-300 relative overflow-hidden">
+                                {{-- Foto --}}
+                                <div class="absolute inset-0 opacity-30 bg-cover bg-center bg-no-repeat w-full h-full" style="background-image: url('{{ asset($member['photo']) }}')"></div>
+                                <div class="relative z-10 w-14 h-14 rounded-full bg-white/70 flex items-center justify-center shadow-sm overflow-hidden">
+                                    @if (file_exists(public_path($member['photo'])))
+                                        <img src="{{ asset($member['photo']) }}" alt="{{ $member['name'] }}" class="w-full h-full object-cover">
+                                    @else
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7 text-emerald-700">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                        </svg>
+                                    @endif
                                 </div>
-                                <div>
-                                    <p class="font-semibold text-gray-900 text-base">{{ $member['name'] }}</p>
-                                    <p class="text-sm text-emerald-700 font-medium mt-1">{{ $member['role'] }}</p>
+                                <div class="relative z-10">
+                                    <p class="font-semibold text-white text-base">{{ $member['name'] }}</p>
+                                    <p class="text-sm text-emerald-500 font-medium mt-1">{{ $member['role'] }}</p>
                                 </div>
                             </div>
                         </div>
@@ -221,14 +281,14 @@
             <div class="animate-marquee">
                 @for ($i = 0; $i < 4; $i++)
                 <div class="flex items-center gap-12 px-6">
-                    <span class="text-2xl font-light text-gray-800 uppercase tracking-tighter whitespace-nowrap">
+                    <span class="text-2xl font-light text-emerald-900 uppercase tracking-tighter whitespace-nowrap">
                         Green Infrastructure Design
                     </span>
-                    <div class="w-8 h-8 bg-gray-300 rounded-lg rotate-12 flex-shrink-0"></div>
-                    <span class="text-2xl font-light text-gray-800 uppercase tracking-tighter whitespace-nowrap">
+                    <div class="w-8 h-8 bg-emerald-900 rounded-lg rotate-12 flex-shrink-0"></div>
+                    <span class="text-2xl font-light text-emerald-900 uppercase tracking-tighter whitespace-nowrap">
                         environmental impact assessment
                     </span>
-                    <div class="w-8 h-8 bg-gray-400 rounded-full flex-shrink-0"></div>
+                    <div class="w-8 h-8 bg-emerald-900 rounded-full flex-shrink-0"></div>
                 </div>
                 @endfor
             </div>
